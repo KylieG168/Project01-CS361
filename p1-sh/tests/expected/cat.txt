@@ -1,0 +1,5 @@
+$ cat data/pwd.txt
+pwd
+quit
+$ quit
+

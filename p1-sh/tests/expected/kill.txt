@@ -1,0 +1,21 @@
+$ ./bin/loop 5 &
+[0] ./bin/loop 5
+$ sleep 2
+$ kill -INT 0
+Caught signal 2
+[0] + killed	./bin/loop 5
+$ ./bin/loop 10 &
+[0] ./bin/loop 10
+$ ./bin/loop 8 &
+[1] ./bin/loop 8
+$ sleep 2
+$ kill -TERM 1
+Caught signal 15
+[1] + killed	./bin/loop 8
+$ sleep 1
+$ kill -INT 1
+No such background process [1]
+$ kill -KILL 0
+[0] + killed	./bin/loop 10
+$ quit
+

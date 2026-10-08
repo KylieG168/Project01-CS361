@@ -1,0 +1,20 @@
+$ mqopen MSG
+[0] mq.MSG
+$ mqsend 0 hello
+$ mqsend 0 goodbye
+$ mqrecv 0 msg
+$ echo Received message '${msg}'
+Received message 'hello'
+$ mqopen MSG2
+[1] mq.MSG2
+$ mqsend 1 toodle-oo
+$ mqrecv 1 msg
+$ echo Received message '${msg}'
+Received message 'toodle-oo'
+$ mqrecv 0 msg
+$ echo Received message '${msg}'
+Received message 'goodbye'
+$ quit
+[0] mq.MSG closed
+[1] mq.MSG2 closed
+

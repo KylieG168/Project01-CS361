@@ -1,0 +1,35 @@
+$ echo hello
+hello
+$ echo $?
+0
+$ cd /tmp
+$ echo $?
+0
+$ cd /real_nowhere_man
+$ echo $?
+-1
+$ type type
+type is a shell builtin
+$ echo $?
+0
+$ type ls
+ls is /bin/ls
+$ echo $?
+0
+$ type real_nowhere_man
+real_nowhere_man not found
+$ echo $?
+1
+$ type bash cd
+bash is /bin/bash
+cd is a shell builtin
+$ echo $?
+0
+$ type gzip nowhere cd
+gzip is /usr/bin/gzip
+nowhere not found
+cd is a shell builtin
+$ echo $?
+1
+$ quit
+

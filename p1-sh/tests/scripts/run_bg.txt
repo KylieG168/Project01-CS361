@@ -1,0 +1,8 @@
+$ ./bin/loop 3 &
+[0] ./bin/loop 3
+$ echo hello
+hello
+$ fg
+[0] + done	./bin/loop 3	[0]
+$ quit
+

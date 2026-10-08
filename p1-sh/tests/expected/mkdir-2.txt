@@ -1,0 +1,33 @@
+$ rm -rf TMPDIR
+$ ./bin/mkdir TMPDIR
+$ echo $?
+0
+$ ./bin/mkdir TMPDIR
+./bin/mkdir: TMPDIR: file exists
+$ echo $?
+1
+$ ./bin/ls -a TMPDIR
+$ ./bin/touch TMPDIR/data.txt
+$ ./bin/ls -a TMPDIR
+data.txt
+$ ./bin/rm TMPDIR
+rm: TMPDIR: is a directory
+$ echo $?
+1
+$ ./bin/rm TMPDIR/data.txt
+$ ./bin/rm -r TMPDIR
+$ echo $?
+0
+$ ./bin/mkdir TMPDIR
+$ ./bin/mkdir TMPDIR/subdir
+$ ./bin/touch TMPDIR/subdir/data.txt
+$ ./bin/ls -a TMPDIR
+subdir
+$ ./bin/ls -a TMPDIR/subdir
+data.txt
+$ ./bin/rm -r TMPDIR
+$ echo $?
+0
+$ ./bin/ls -a TMPDIR
+$ quit
+

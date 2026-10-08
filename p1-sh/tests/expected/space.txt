@@ -1,0 +1,18 @@
+$ echo this   has      extra spaces
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute echo with arguments { echo, this, has, extra, spaces, (null) }
+$ echo -d: this  has colons
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute echo with arguments { echo, -d:, this, has, colons, (null) }
+$ quit
+

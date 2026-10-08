@@ -1,0 +1,11 @@
+$ echo hello\nworld | ./bin/head -n 1
+hello
+$ echo hello,world,its,me | cut -d, -f 2
+world
+$ echo | wc -c
+       1
+$ type cd nowhere ls gzip | ./bin/head -n 2
+cd is a shell builtin
+nowhere not found
+$ quit
+

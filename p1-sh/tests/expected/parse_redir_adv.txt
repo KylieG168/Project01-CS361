@@ -1,0 +1,70 @@
+$ ./bin/segv >/dev/null
+[Init.TOKEN -> Command]
+[Command.REDIRECT -> Redirecting]
+[Redirecting.TOKEN -> Redirection]
+[Redirection.NEWLINE -> Term]
+  Execute ./bin/segv with arguments { ./bin/segv, (null) }
+  Redirect stdout to file '/dev/null'
+$ ./bin/segv 1> /dev/null
+[Init.TOKEN -> Command]
+[Command.FHANDLE -> Number]
+[Number.REDIRECT -> Redirecting]
+[Redirecting.TOKEN -> Redirection]
+[Redirection.NEWLINE -> Term]
+  Execute ./bin/segv with arguments { ./bin/segv, (null) }
+  Redirect stdout to file '/dev/null'
+$ ./bin/segv>/dev/null 2 >& 1
+[Init.TOKEN -> Command]
+[Command.REDIRECT -> Redirecting]
+[Redirecting.TOKEN -> Redirection]
+[Redirection.FHANDLE -> Number]
+[Number.REDIRECT -> Redirecting]
+[Redirecting.AMPERSAND -> Merging]
+[Merging.FHANDLE -> Redirection]
+[Redirection.NEWLINE -> Term]
+  Execute ./bin/segv with arguments { ./bin/segv, (null) }
+  Redirect stdout to file '/dev/null'
+  Merge stderr into stdout
+$ ./bin/segv 2>&1 | head -n 1 > out
+[Init.TOKEN -> Command]
+[Command.FHANDLE -> Number]
+[Number.REDIRECT -> Redirecting]
+[Redirecting.AMPERSAND -> Merging]
+[Merging.FHANDLE -> Redirection]
+[Redirection.PIPE -> Make_Pipe]
+  Create pipe for output of ./bin/segv
+  Execute ./bin/segv with arguments { ./bin/segv, (null) }
+  Merge stderr into stdout
+[Make_Pipe.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.REDIRECT -> Redirecting]
+[Redirecting.TOKEN -> Redirection]
+[Redirection.NEWLINE -> Term]
+  Execute head with arguments { head, -n, 1, (null) }
+  Redirect stdout to file 'out'
+$ cat nowhere 2>&1 | cut -d : -f2 | cut -dw -f2
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.FHANDLE -> Number]
+[Number.REDIRECT -> Redirecting]
+[Redirecting.AMPERSAND -> Merging]
+[Merging.FHANDLE -> Redirection]
+[Redirection.PIPE -> Make_Pipe]
+  Create pipe for output of cat
+  Execute cat with arguments { cat, nowhere, (null) }
+  Merge stderr into stdout
+[Make_Pipe.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.PIPE -> Make_Pipe]
+  Create pipe for output of cut
+  Execute cut with arguments { cut, -d, :, -f2, (null) }
+[Make_Pipe.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute cut with arguments { cut, -dw, -f2, (null) }
+$ quit
+

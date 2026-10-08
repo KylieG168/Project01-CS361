@@ -1,0 +1,6 @@
+$ cat data/yat.txt | wc
+      1       4      22
+$ cat data/pwd.txt | tail -n 1
+quit
+$ quit
+

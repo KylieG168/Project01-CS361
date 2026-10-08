@@ -1,0 +1,25 @@
+$ ls data
+FIRST.txt
+empty.txt
+lines.txt
+pwd.txt
+subdir
+yat.txt
+$ head Makefile
+#
+# Simple Test Makefile
+# Mike Lam, James Madison University, August 2016
+#
+# This version of the Makefile includes support for building a test suite. The
+# recommended framework is Check (http://check.sourceforge.net/). To build and
+# run the test suite, execute the "test" target. The test suite must be located
+# in a module called "testsuite". The MODS, LIBS, and OBJS variables work as
+# they do in the main Makefile.
+#
+$ cat data/pwd.txt
+pwd
+quit
+$ wc data/yat.txt
+       1       4      22 data/yat.txt
+$ quit
+

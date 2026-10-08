@@ -1,0 +1,22 @@
+rm -rf TMPDIR
+./bin/mkdir TMPDIR
+echo $?
+./bin/mkdir TMPDIR
+echo $?
+./bin/ls -a TMPDIR
+./bin/touch TMPDIR/data.txt
+./bin/ls -a TMPDIR
+./bin/rm TMPDIR
+echo $?
+./bin/rm TMPDIR/data.txt
+./bin/rm -r TMPDIR
+echo $?
+./bin/mkdir TMPDIR
+./bin/mkdir TMPDIR/subdir
+./bin/touch TMPDIR/subdir/data.txt
+./bin/ls -a TMPDIR
+./bin/ls -a TMPDIR/subdir
+./bin/rm -r TMPDIR
+echo $?
+./bin/ls -a TMPDIR
+quit

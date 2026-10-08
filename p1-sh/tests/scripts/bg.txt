@@ -1,0 +1,4 @@
+./bin/loop 3 &
+echo hello
+fg
+quit

@@ -1,0 +1,93 @@
+# list of integration tests
+#  format: <PHASE> <FEATURE> <TAG> "<ARGS>"
+#    <PHASE>    grade level for the associated feature
+#    <FEATURE>  grouping of related tests for a common feature to implement
+#    <TAG>      used as the root for all filenames (i.e., "expected/$TAG.txt")
+#    <ARGS>     command-line arguments to test
+
+# To run a single test:
+#   make test quit
+
+# To run multiple tests:
+#   make test echo_min cat
+
+# To run all tests in a feature:
+#   make check shell
+
+# To submit a feature for grading:
+#   make submit shell
+
+# basic shell with echo, quit, and fork/exec
+BASIC shell quit                "-b scripts/quit.txt"
+BASIC shell echo_min            "-b scripts/echo_min.txt"
+BASIC shell cat                 "-b scripts/cat.txt"
+
+# parsing command line as a finite state machine
+MIN fsm fsm                     "-f -b scripts/cat.txt"
+MIN fsm space                   "-f -b scripts/echo_space.txt"
+MIN fsm flags                   "-f -b scripts/utils_bins_flags.txt"
+MIN fsm parse_pipe              "-f -b scripts/pipemin.txt"
+
+# common shell builtins and return code checking
+MIN builtins cd                 "-b scripts/dirs.txt"
+MIN builtins echo               "-b scripts/echo.txt"
+MIN builtins echo_space         "-b scripts/echo_space.txt"
+MIN builtins type               "-b scripts/type.txt"
+MIN builtins rc_builtins        "-b scripts/rc_builtins.txt"
+
+# common basic utilities, flags, and error checking
+MIN procs bins                  "-b scripts/utils_bins.txt"
+MIN procs bins_flags            "-b scripts/utils_bins_flags.txt"
+MIN procs cat_flags             "-b scripts/utils_cat_flags.txt"
+MIN procs bins_bad              "-b scripts/utils_bins_bad.txt"
+MIN procs rc                    "-b scripts/rc.txt"
+
+# extend the FSM parsing for errors, pipes, redirections, and background
+INTER fsmext parse_pipes        "-f -b scripts/multipipe.txt"
+INTER fsmext parse_bg           "-f -b scripts/fsm_bg.txt"
+INTER fsmext parse_redirect     "-f -b scripts/redirect.txt"
+INTER fsmext parse_redir_adv    "-f -b scripts/redir_adv.txt"
+INTER fsmext parse_errors       "-f -b scripts/parse_errors.txt"
+
+# environment variables
+INTER env export                "-b scripts/export.txt"
+INTER env repeat                "-b scripts/repeat.txt"
+INTER env setenv                "-b scripts/setenv.txt"
+INTER env env                   "-b scripts/env.txt"
+INTER env env_builtins          "-b scripts/env_builtins.txt"
+
+# file manipulations
+INTER util chmod                "-b scripts/bins_chmod.txt"
+INTER util file                 "-b scripts/bins_file.txt"
+INTER util rm                   "-b scripts/bins_rm.txt"
+INTER util touch                "-b scripts/bins_touch.txt"
+INTER util mkdir                "-b scripts/bins_mkdir.txt"
+
+# redirecting stdout to files and pipes
+INTER io stdout                 "-b scripts/stdout.txt"
+INTER io pipe_min               "-b scripts/pipemin.txt"
+INTER io cat_tail               "-b scripts/tail.txt"
+INTER io pipe_utils             "-b scripts/pipe.txt"
+INTER io tee                    "-b scripts/tee.txt"
+INTER io tee_pipe               "-b scripts/tee_pipe.txt"
+
+# process control - background jobs and killing processes
+# NOTE these tests are intentionally SLOW
+ADV pcntl run_bg                "-b scripts/bg.txt"
+ADV pcntl kill                  "-b scripts/kill.txt"
+ADV pcntl jobs                  "-b scripts/jobs.txt"
+
+# pipes for builtins, more than 2 commands, redirect builtins
+ADV ioext multi                 "-b scripts/multipipe.txt"
+ADV ioext hybrid                "-b scripts/pipe_echo.txt"
+ADV ioext stdout_builtins       "-b scripts/stdout_echo.txt"
+
+# handle redirections with stderr to files and pipes
+ADV ioerr stderr                "-b scripts/stderr.txt"
+ADV ioerr stderr_builtins       "-b scripts/stderr_echo.txt"
+
+# create a minimal message queue with priority sending
+ADV ipc mqsend                  "-b scripts/mkqueue.txt"
+ADV ipc mqmulti                 "-b scripts/mqmulti.txt"
+ADV ipc mqrc                    "-b scripts/mqrc.txt"
+ADV ipc mqprio                  "-b scripts/mqprio.txt"

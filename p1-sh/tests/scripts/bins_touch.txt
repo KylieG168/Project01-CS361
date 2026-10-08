@@ -1,0 +1,11 @@
+rm -f data/TMPFILE
+./bin/touch data/TMPFILE
+echo $?
+./bin/touch data/TMPFILE
+echo $?
+./bin/ls -a data
+./bin/touch data/TMPFILE2 data/TMPFILE3
+echo $?
+./bin/rm data/TMPFILE data/TMPFILE2 data/TMPFILE3
+./bin/ls -a data
+quit

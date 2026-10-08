@@ -1,0 +1,5 @@
+./bin/loop 3 > /dev/null
+cat nowhere 2 > /dev/null
+cat data/pwd.txt nowhere 2>&1
+cat data/pwd.txt nowhere > /dev/null 2>&1
+quit

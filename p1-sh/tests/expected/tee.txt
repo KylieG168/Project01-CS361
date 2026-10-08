@@ -1,0 +1,20 @@
+$ ./bin/tee -f data/pwd.txt TEE.OUT
+pwd
+quit
+$ echo $?
+0
+$ cat TEE.OUT
+pwd
+quit
+$ ./bin/tee -f data/empty.txt TEE.OUT
+$ echo $?
+0
+$ cat TEE.OUT
+$ ./bin/tee -f nowhere TEE.ERR
+$ echo $?
+1
+$ ls TEE.ERR
+$ rm TEE.OUT
+$ rm TEE.ERR
+$ quit
+

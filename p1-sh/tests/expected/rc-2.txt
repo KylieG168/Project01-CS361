@@ -1,0 +1,12 @@
+$ ls data/pwd.txt
+data/pwd.txt
+$ echo $?
+0
+$ run_prog_ls -l
+$ echo $?
+127
+$ head asdlfkj
+$ echo $?
+1
+$ quit
+

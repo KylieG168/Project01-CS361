@@ -1,0 +1,6 @@
+./bin/segv >/dev/null
+./bin/segv 1> /dev/null
+./bin/segv>/dev/null 2 >& 1
+./bin/segv 2>&1 | head -n 1 > out
+cat nowhere 2>&1 | cut -d : -f2 | cut -dw -f2
+quit

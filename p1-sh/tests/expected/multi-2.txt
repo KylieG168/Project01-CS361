@@ -1,0 +1,9 @@
+$ ./bin/ls -a data | grep p | ./bin/head -n 1
+empty.txt
+$ ./bin/ls -a data | grep -v p | tail -n 2
+subdir
+yat.txt
+$ cat data/yat.txt | cut -d e -f 2 | wc -c
+       8
+$ quit
+

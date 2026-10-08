@@ -1,0 +1,8 @@
+$ echo hello\bworld 2>&1
+syntax error: invalid escape sequence '\b'
+$ echo hello\bworld | cut -d: -f1
+
+$ echo hello\bworld 2>&1 | cut -d: -f1
+syntax error
+$ quit
+

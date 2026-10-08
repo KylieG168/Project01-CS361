@@ -1,0 +1,4 @@
+./bin/ls -a data | grep p | ./bin/head -n 1
+./bin/ls -a data | grep -v p | tail -n 2
+cat data/yat.txt | cut -d e -f 2 | wc -c
+quit

@@ -1,0 +1,3 @@
+cat data/yat.txt | wc
+cat data/pwd.txt | tail -n 1
+quit

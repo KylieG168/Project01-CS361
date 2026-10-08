@@ -1,0 +1,12 @@
+./bin/tee -f data/pwd.txt TEE.OUT
+echo $?
+cat TEE.OUT
+./bin/tee -f data/empty.txt TEE.OUT
+echo $?
+cat TEE.OUT
+./bin/tee -f nowhere TEE.ERR
+echo $?
+ls TEE.ERR
+rm TEE.OUT
+rm TEE.ERR
+quit

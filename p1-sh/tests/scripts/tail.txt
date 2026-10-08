@@ -1,0 +1,4 @@
+./bin/cat cut_data/data.csv
+./bin/cat cut_data/data.csv | cut -d , -f 2
+./bin/cat cut_data/data.csv | tail -n 1
+quit

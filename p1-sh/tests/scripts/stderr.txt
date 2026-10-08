@@ -1,0 +1,17 @@
+rm TMP.STDOUT
+ls nowhere > TMP.STDOUT
+echo $?
+./bin/cat TMP.STDOUT
+ls nowhere > TMP.STDOUT 2>&1
+echo $?
+./bin/cat TMP.STDOUT
+rm TMP.STDOUT
+ls nowhere | cut -d: -f3
+echo $?
+ls nowhere 2>&1 | cut -d: -f3
+echo $?
+./bin/segv
+echo $?
+./bin/segv 2>&1 | tail -n 1
+echo $?
+quit

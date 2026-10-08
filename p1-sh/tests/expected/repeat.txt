@@ -1,0 +1,9 @@
+$ export SHELL=/bin/bash
+$ export USER=me
+$ ./bin/repeat 1 USER
+USER=me
+$ ./bin/repeat 2 SHELL
+SHELL=/bin/bash
+SHELL=/bin/bash
+$ quit
+

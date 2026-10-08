@@ -1,0 +1,3 @@
+cat -n data/FIRST.txt data/empty.txt data/lines.txt data/pwd.txt data/yat.txt
+cat -b -s data/FIRST.txt data/empty.txt data/lines.txt data/pwd.txt data/yat.txt
+quit

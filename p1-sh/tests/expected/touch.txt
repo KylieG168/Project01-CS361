@@ -1,0 +1,30 @@
+$ rm -f data/TMPFILE
+$ ./bin/touch data/TMPFILE
+$ echo $?
+0
+$ ./bin/touch data/TMPFILE
+$ echo $?
+0
+$ ./bin/ls -a data
+empty.txt
+FIRST.txt
+.hidden.txt
+lines.txt
+pwd.txt
+subdir
+TMPFILE
+yat.txt
+$ ./bin/touch data/TMPFILE2 data/TMPFILE3
+$ echo $?
+0
+$ ./bin/rm data/TMPFILE data/TMPFILE2 data/TMPFILE3
+$ ./bin/ls -a data
+empty.txt
+FIRST.txt
+.hidden.txt
+lines.txt
+pwd.txt
+subdir
+yat.txt
+$ quit
+

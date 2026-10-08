@@ -1,0 +1,15 @@
+$ export A=5
+$ echo A=${A}
+A=5
+$ B=6 echo A=${A} B=${B}
+A=5 B=6
+$ C=10 echo A=${A} B=${B} C=${C}
+A=5 B= C=10
+$ echo ${A}
+5
+$ echo ${B}
+
+$ echo ${C}
+
+$ quit
+

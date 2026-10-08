@@ -1,0 +1,12 @@
+mqopen MSG
+mqsend 0 hello
+mqrecv 0 msg
+echo $?
+echo Received message '${msg}'
+mqrecv 0 msg
+echo $?
+echo Received message '${msg}'
+mqrecv 1 msg
+echo $?
+mqsend 0 forgotten message
+quit

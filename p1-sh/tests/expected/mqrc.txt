@@ -1,0 +1,22 @@
+$ mqopen MSG
+[0] mq.MSG
+$ mqsend 0 hello
+$ mqrecv 0 msg
+$ echo $?
+0
+$ echo Received message '${msg}'
+Received message 'hello'
+$ mqrecv 0 msg
+$ echo $?
+-1
+$ echo Received message '${msg}'
+Received message ''
+$ mqrecv 1 msg
+$ echo $?
+-1
+$ mqsend 0 forgotten message
+$ quit
+[0] mq.MSG not empty:
+    'forgotten message'
+[0] mq.MSG closed
+

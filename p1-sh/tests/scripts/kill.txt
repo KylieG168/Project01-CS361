@@ -1,0 +1,11 @@
+./bin/loop 5 &
+sleep 2
+kill -INT 0
+./bin/loop 10 &
+./bin/loop 8 &
+sleep 2
+kill -TERM 1
+sleep 1
+kill -INT 1
+kill -KILL 0
+quit

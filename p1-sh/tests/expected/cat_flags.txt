@@ -1,0 +1,22 @@
+$ cat -n data/FIRST.txt data/empty.txt data/lines.txt data/pwd.txt data/yat.txt
+     1	First
+     2	first
+     3	
+     4	
+     5	
+     6	
+     7	
+     8	second
+     9	pwd
+    10	quit
+    11	yet another test file
+$ cat -b -s data/FIRST.txt data/empty.txt data/lines.txt data/pwd.txt data/yat.txt
+     1	First
+     2	first
+
+     3	second
+     4	pwd
+     5	quit
+     6	yet another test file
+$ quit
+

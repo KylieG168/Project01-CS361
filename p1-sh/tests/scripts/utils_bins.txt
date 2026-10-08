@@ -1,0 +1,5 @@
+ls data
+head Makefile
+cat data/pwd.txt
+wc data/yat.txt
+quit

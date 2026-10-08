@@ -1,0 +1,22 @@
+$ cat data/yat.txt | wc
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.PIPE -> Make_Pipe]
+  Create pipe for output of cat
+  Execute cat with arguments { cat, data/yat.txt, (null) }
+[Make_Pipe.TOKEN -> Command]
+[Command.NEWLINE -> Term]
+  Execute wc with arguments { wc, (null) }
+$ cat data/pwd.txt | tail -n 1
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.PIPE -> Make_Pipe]
+  Create pipe for output of cat
+  Execute cat with arguments { cat, data/pwd.txt, (null) }
+[Make_Pipe.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.FHANDLE -> Number]
+[Number.NEWLINE -> Term]
+  Execute tail with arguments { tail, -n, 1, (null) }
+$ quit
+

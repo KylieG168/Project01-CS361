@@ -1,0 +1,13 @@
+$ echo goodbye
+goodbye
+$ echo hello\nworld
+hello
+world
+$ echo this\nhas\nnewlines
+this
+has
+newlines
+$ echo
+
+$ quit
+

@@ -1,0 +1,24 @@
+$ ./bin/file Makefile
+Makefile: ASCII text
+$ ./bin/file code/hello.py
+code/hello.py: ASCII text
+$ ./bin/file code/hello.c code/hello
+code/hello.c: ASCII text
+code/hello: binary
+$ ./bin/file code/empty.txt
+code/empty.txt: empty
+$ ./bin/file -t code/hello.sh
+code/hello.sh: /bin/bash text executable, ASCII text
+$ ./bin/file -t code/hello.py code/hello.c code/hello Makefile
+code/hello.py: /usr/bin/python text executable, ASCII text
+code/hello.c: unknown type, ASCII text
+code/hello: ELF 64-bit, binary
+Makefile: makefile script text, ASCII text
+$ ./bin/file -t code/hello.mac code/hello.mac32 code/hello.32
+code/hello.mac: Mach-O 64-bit executable arm64, binary
+code/hello.mac32: Mach-O executable arm64, binary
+code/hello.32: ELF 32-bit, binary
+$ ./bin/file code/nowhere
+$ ./bin/file -t code/nowhere
+$ quit
+

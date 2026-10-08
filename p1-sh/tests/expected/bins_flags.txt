@@ -1,0 +1,36 @@
+$ chmod 640 data/empty.txt
+$ chmod 640 data/FIRST.txt
+$ chmod 640 data/.hidden.txt
+$ chmod 640 data/lines.txt
+$ chmod 640 data/pwd.txt
+$ chmod 640 data/yat.txt
+$ chmod 751 data/subdir
+$ chmod 640 data/subdir/.gitkeep
+$ ./bin/ls -s data
+0 empty.txt
+6 FIRST.txt
+18 lines.txt
+9 pwd.txt
+22 yat.txt
+$ ./bin/ls -a data
+empty.txt
+FIRST.txt
+.hidden.txt
+lines.txt
+pwd.txt
+subdir
+yat.txt
+$ ./bin/ls -pa data
+-rw-r----- empty.txt
+-rw-r----- FIRST.txt
+-rw-r----- .hidden.txt
+-rw-r----- lines.txt
+-rw-r----- pwd.txt
+drwxr-x--x subdir
+-rw-r----- yat.txt
+$ ./bin/head -n 1 Makefile
+#
+$ wc -l Makefile 
+118 Makefile
+$ quit
+

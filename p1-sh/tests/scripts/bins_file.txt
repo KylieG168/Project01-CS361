@@ -1,0 +1,10 @@
+./bin/file Makefile
+./bin/file code/hello.py
+./bin/file code/hello.c code/hello
+./bin/file code/empty.txt
+./bin/file -t code/hello.sh
+./bin/file -t code/hello.py code/hello.c code/hello Makefile
+./bin/file -t code/hello.mac code/hello.mac32 code/hello.32
+./bin/file code/nowhere
+./bin/file -t code/nowhere
+quit

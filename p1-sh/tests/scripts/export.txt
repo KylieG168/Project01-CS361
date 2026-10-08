@@ -1,0 +1,7 @@
+type export
+echo N=${NUM}
+export NUM=5
+echo N=${NUM}
+unset NUM
+echo N=${NUM}
+quit

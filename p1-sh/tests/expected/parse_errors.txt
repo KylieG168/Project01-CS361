@@ -1,0 +1,31 @@
+$ cat nowhere |
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.PIPE -> Make_Pipe]
+  Create pipe for output of cat
+  Execute cat with arguments { cat, nowhere, (null) }
+[Make_Pipe.NEWLINE -> Term]
+$ | head
+[Init.PIPE -> Term]
+$ > out 2>&1
+[Init.REDIRECT -> Term]
+$ ./bin/segv >
+[Init.TOKEN -> Command]
+[Command.REDIRECT -> Redirecting]
+[Redirecting.NEWLINE -> Term]
+$ ./bin/segv >> /dev/null
+[Init.TOKEN -> Command]
+[Command.REDIRECT -> Redirecting]
+[Redirecting.REDIRECT -> Term]
+$ ./bin/segv & > out
+[Init.TOKEN -> Command]
+[Command.AMPERSAND -> Background]
+[Background.REDIRECT -> Term]
+$ ./bin/segv 2>& | > out
+[Init.TOKEN -> Command]
+[Command.FHANDLE -> Number]
+[Number.REDIRECT -> Redirecting]
+[Redirecting.AMPERSAND -> Merging]
+[Merging.PIPE -> Term]
+$ quit
+

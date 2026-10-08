@@ -1,0 +1,12 @@
+$ type export
+export is a shell builtin
+$ echo N=${NUM}
+N=
+$ export NUM=5
+$ echo N=${NUM}
+N=5
+$ unset NUM
+$ echo N=${NUM}
+N=
+$ quit
+

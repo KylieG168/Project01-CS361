@@ -1,0 +1,81 @@
+$ chmod 640 data/empty.txt
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute chmod with arguments { chmod, 640, data/empty.txt, (null) }
+$ chmod 640 data/FIRST.txt
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute chmod with arguments { chmod, 640, data/FIRST.txt, (null) }
+$ chmod 640 data/.hidden.txt
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute chmod with arguments { chmod, 640, data/.hidden.txt, (null) }
+$ chmod 640 data/lines.txt
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute chmod with arguments { chmod, 640, data/lines.txt, (null) }
+$ chmod 640 data/pwd.txt
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute chmod with arguments { chmod, 640, data/pwd.txt, (null) }
+$ chmod 640 data/yat.txt
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute chmod with arguments { chmod, 640, data/yat.txt, (null) }
+$ chmod 751 data/subdir
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute chmod with arguments { chmod, 751, data/subdir, (null) }
+$ chmod 640 data/subdir/.gitkeep
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute chmod with arguments { chmod, 640, data/subdir/.gitkeep, (null) }
+$ ./bin/ls -s data
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute ./bin/ls with arguments { ./bin/ls, -s, data, (null) }
+$ ./bin/ls -a data
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute ./bin/ls with arguments { ./bin/ls, -a, data, (null) }
+$ ./bin/ls -pa data
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute ./bin/ls with arguments { ./bin/ls, -pa, data, (null) }
+$ ./bin/head -n 1 Makefile
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute ./bin/head with arguments { ./bin/head, -n, 1, Makefile, (null) }
+$ wc -l Makefile 
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute wc with arguments { wc, -l, Makefile, (null) }
+$ quit
+

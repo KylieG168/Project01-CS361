@@ -1,0 +1,5 @@
+rm TMP.STDOUT
+./bin/ls data > TMP.STDOUT
+./bin/cat TMP.STDOUT
+rm TMP.STDOUT
+quit

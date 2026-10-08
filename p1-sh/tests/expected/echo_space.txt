@@ -1,0 +1,6 @@
+$ echo this   has      extra spaces
+this has extra spaces
+$ echo -d: this  has colons
+this:has:colons
+$ quit
+

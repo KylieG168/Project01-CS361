@@ -1,0 +1,16 @@
+$ ./bin/ls -a data | ./bin/head -n 1
+empty.txt
+$ ./bin/ls -a data | ./bin/head -n 2000
+empty.txt
+FIRST.txt
+.hidden.txt
+lines.txt
+pwd.txt
+subdir
+yat.txt
+$ ./bin/head -n 1 cut_data/data.csv | cut -d , -f 2
+world
+$ ./bin/head -n 1 cut_data/data.csv | cut -d , -f 4
+
+$ quit
+

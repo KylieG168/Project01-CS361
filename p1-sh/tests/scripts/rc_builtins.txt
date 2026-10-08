@@ -1,0 +1,17 @@
+echo hello
+echo $?
+cd /tmp
+echo $?
+cd /real_nowhere_man
+echo $?
+type type
+echo $?
+type ls
+echo $?
+type real_nowhere_man
+echo $?
+type bash cd
+echo $?
+type gzip nowhere cd
+echo $?
+quit

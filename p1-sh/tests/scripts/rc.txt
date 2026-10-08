@@ -1,0 +1,8 @@
+ls data/pwd.txt
+echo $?
+run_prog_ls -l
+echo $?
+head asdlfkj
+echo $?
+quit
+

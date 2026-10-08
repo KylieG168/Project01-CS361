@@ -1,0 +1,44 @@
+$ ./bin/loop 3 > /dev/null
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.REDIRECT -> Redirecting]
+[Redirecting.TOKEN -> Redirection]
+[Redirection.NEWLINE -> Term]
+  Execute ./bin/loop with arguments { ./bin/loop, 3, (null) }
+  Redirect stdout to file '/dev/null'
+$ cat nowhere 2 > /dev/null
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.FHANDLE -> Number]
+[Number.REDIRECT -> Redirecting]
+[Redirecting.TOKEN -> Redirection]
+[Redirection.NEWLINE -> Term]
+  Execute cat with arguments { cat, nowhere, (null) }
+  Redirect stderr to file '/dev/null'
+$ cat data/pwd.txt nowhere 2>&1
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.FHANDLE -> Number]
+[Number.REDIRECT -> Redirecting]
+[Redirecting.AMPERSAND -> Merging]
+[Merging.FHANDLE -> Redirection]
+[Redirection.NEWLINE -> Term]
+  Execute cat with arguments { cat, data/pwd.txt, nowhere, (null) }
+  Merge stderr into stdout
+$ cat data/pwd.txt nowhere > /dev/null 2>&1
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.REDIRECT -> Redirecting]
+[Redirecting.TOKEN -> Redirection]
+[Redirection.FHANDLE -> Number]
+[Number.REDIRECT -> Redirecting]
+[Redirecting.AMPERSAND -> Merging]
+[Merging.FHANDLE -> Redirection]
+[Redirection.NEWLINE -> Term]
+  Execute cat with arguments { cat, data/pwd.txt, nowhere, (null) }
+  Redirect stdout to file '/dev/null'
+  Merge stderr into stdout
+$ quit
+

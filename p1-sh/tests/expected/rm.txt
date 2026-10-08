@@ -1,0 +1,44 @@
+$ rm -rf data/TMPSUBDIR
+$ ./bin/rm nowhere_man
+$ echo $?
+1
+$ touch data/TMPFILE
+$ ./bin/ls -a data
+empty.txt
+FIRST.txt
+.hidden.txt
+lines.txt
+pwd.txt
+subdir
+TMPFILE
+yat.txt
+$ ./bin/rm data/TMPFILE
+$ echo $?
+0
+$ mkdir data/TMPSUBDIR
+$ ./bin/ls -a data
+empty.txt
+FIRST.txt
+.hidden.txt
+lines.txt
+pwd.txt
+subdir
+TMPSUBDIR
+yat.txt
+$ touch data/TMPSUBDIR/TMPFILE
+$ ./bin/rm data/TMPSUBDIR
+$ echo $?
+1
+$ ./bin/rm -r data/TMPSUBDIR
+$ echo $?
+0
+$ ./bin/ls -a data
+empty.txt
+FIRST.txt
+.hidden.txt
+lines.txt
+pwd.txt
+subdir
+yat.txt
+$ quit
+

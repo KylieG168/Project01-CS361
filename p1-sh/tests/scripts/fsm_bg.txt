@@ -1,0 +1,7 @@
+./bin/loop 2 &
+fg
+./bin/loop 3 | wc -l &
+fg
+./bin/loop&
+kill -INT 0
+quit

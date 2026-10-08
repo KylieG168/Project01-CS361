@@ -1,0 +1,12 @@
+$ cd /usr/bin
+$ pwd
+/usr/bin
+$ cd /tmp
+$ pwd
+/tmp
+$ cd /i_dont_exist
+cd: no such file or directory: /i_dont_exist
+$ pwd
+/tmp
+$ quit
+

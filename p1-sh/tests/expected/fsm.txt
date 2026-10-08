@@ -1,0 +1,7 @@
+$ cat data/pwd.txt
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute cat with arguments { cat, data/pwd.txt, (null) }
+$ quit
+

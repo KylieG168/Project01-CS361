@@ -1,0 +1,12 @@
+$ rm TMP.STDOUT
+$ ./bin/ls data > TMP.STDOUT
+$ ./bin/cat TMP.STDOUT
+empty.txt
+FIRST.txt
+lines.txt
+pwd.txt
+subdir
+yat.txt
+$ rm TMP.STDOUT
+$ quit
+

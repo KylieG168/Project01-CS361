@@ -1,0 +1,5 @@
+./bin/ls -a data | ./bin/head -n 1
+./bin/ls -a data | ./bin/head -n 2000
+./bin/head -n 1 cut_data/data.csv | cut -d , -f 2
+./bin/head -n 1 cut_data/data.csv | cut -d , -f 4
+quit

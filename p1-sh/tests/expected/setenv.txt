@@ -1,0 +1,14 @@
+$ A=5 ./bin/repeat 2 A
+A=5
+A=5
+$ A=5 B=6 C=7 ./bin/repeat 1 A 2 B 3 C
+A=5
+B=6
+B=6
+C=7
+C=7
+C=7
+$ A=10 ./bin/repeat 1 B
+B=
+$ quit
+

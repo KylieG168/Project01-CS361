@@ -1,0 +1,7 @@
+cd /usr/bin
+pwd
+cd /tmp
+pwd
+cd /i_dont_exist
+pwd
+quit

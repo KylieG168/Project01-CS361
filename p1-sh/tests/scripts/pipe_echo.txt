@@ -1,0 +1,5 @@
+echo hello\nworld | ./bin/head -n 1
+echo hello,world,its,me | cut -d, -f 2
+echo | wc -c
+type cd nowhere ls gzip | ./bin/head -n 2
+quit

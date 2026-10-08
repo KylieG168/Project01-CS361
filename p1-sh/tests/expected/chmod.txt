@@ -1,0 +1,40 @@
+$ ./bin/ls -a data
+empty.txt
+FIRST.txt
+.hidden.txt
+lines.txt
+pwd.txt
+subdir
+yat.txt
+$ ./bin/ls -s data
+0 empty.txt
+6 FIRST.txt
+18 lines.txt
+9 pwd.txt
+22 yat.txt
+$ ./bin/ls -sa data
+0 empty.txt
+6 FIRST.txt
+5 .hidden.txt
+18 lines.txt
+9 pwd.txt
+22 yat.txt
+$ ./bin/chmod rw- rw- --- data/empty.txt
+$ ./bin/chmod r-- --- --x data/FIRST.txt
+$ ./bin/chmod rw- rw- rw- data/pwd.txt
+$ ./bin/chmod r-x r-x r-x data/yat.txt
+$ ./bin/chmod rwx --- --- data/.hidden.txt
+$ ./bin/chmod r-x --x r-- data/subdir
+$ ./bin/chmod r-- r-- r-- data/lines.txt
+$ ./bin/ls -ap data
+-rw-rw---- empty.txt
+-r-------x FIRST.txt
+-rwx------ .hidden.txt
+-r--r--r-- lines.txt
+-rw-rw-rw- pwd.txt
+dr-x--xr-- subdir
+-r-xr-xr-x yat.txt
+$ ./bin/head -n 1 Makefile
+#
+$ quit
+

@@ -1,0 +1,3 @@
+echo this   has      extra spaces
+echo -d: this  has colons
+quit

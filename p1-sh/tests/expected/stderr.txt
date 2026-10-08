@@ -1,0 +1,28 @@
+$ rm TMP.STDOUT
+$ ls nowhere > TMP.STDOUT
+$ echo $?
+2
+$ ./bin/cat TMP.STDOUT
+$ ls nowhere > TMP.STDOUT 2>&1
+$ echo $?
+2
+$ ./bin/cat TMP.STDOUT
+ls: cannot access 'nowhere': No such file or directory
+$ rm TMP.STDOUT
+$ ls nowhere | cut -d: -f3
+$ echo $?
+0
+$ ls nowhere 2>&1 | cut -d: -f3
+ No such file or directory
+$ echo $?
+0
+$ ./bin/segv
+null = (null)
+$ echo $?
+1
+$ ./bin/segv 2>&1 | tail -n 1
+ERROR: segfault 11
+$ echo $?
+0
+$ quit
+

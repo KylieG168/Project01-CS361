@@ -1,0 +1,14 @@
+chmod 640 data/empty.txt
+chmod 640 data/FIRST.txt
+chmod 640 data/.hidden.txt
+chmod 640 data/lines.txt
+chmod 640 data/pwd.txt
+chmod 640 data/yat.txt
+chmod 751 data/subdir
+chmod 640 data/subdir/.gitkeep
+./bin/ls -s data
+./bin/ls -a data
+./bin/ls -pa data
+./bin/head -n 1 Makefile
+wc -l Makefile 
+quit

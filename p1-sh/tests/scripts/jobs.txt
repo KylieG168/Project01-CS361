@@ -1,0 +1,10 @@
+./bin/loop 2 &
+./bin/loop 8 &
+echo hello
+./bin/loop 5 &
+jobs
+sleep 3
+jobs
+fg
+jobs
+quit

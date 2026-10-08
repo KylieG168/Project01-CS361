@@ -1,0 +1,55 @@
+$ ./bin/ls -a data | grep p | ./bin/head -n 1
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.PIPE -> Make_Pipe]
+  Create pipe for output of ./bin/ls
+  Execute ./bin/ls with arguments { ./bin/ls, -a, data, (null) }
+[Make_Pipe.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.PIPE -> Make_Pipe]
+  Create pipe for output of grep
+  Execute grep with arguments { grep, p, (null) }
+[Make_Pipe.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.FHANDLE -> Number]
+[Number.NEWLINE -> Term]
+  Execute ./bin/head with arguments { ./bin/head, -n, 1, (null) }
+$ ./bin/ls -a data | grep -v p | tail -n 2
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.PIPE -> Make_Pipe]
+  Create pipe for output of ./bin/ls
+  Execute ./bin/ls with arguments { ./bin/ls, -a, data, (null) }
+[Make_Pipe.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.PIPE -> Make_Pipe]
+  Create pipe for output of grep
+  Execute grep with arguments { grep, -v, p, (null) }
+[Make_Pipe.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.FHANDLE -> Number]
+[Number.NEWLINE -> Term]
+  Execute tail with arguments { tail, -n, 2, (null) }
+$ cat data/yat.txt | cut -d e -f 2 | wc -c
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.PIPE -> Make_Pipe]
+  Create pipe for output of cat
+  Execute cat with arguments { cat, data/yat.txt, (null) }
+[Make_Pipe.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.FHANDLE -> Number]
+[Number.PIPE -> Make_Pipe]
+  Create pipe for output of cut
+  Execute cut with arguments { cut, -d, e, -f, 2, (null) }
+[Make_Pipe.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute wc with arguments { wc, -c, (null) }
+$ quit
+

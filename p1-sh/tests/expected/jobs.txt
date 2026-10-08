@@ -1,0 +1,23 @@
+$ ./bin/loop 2 &
+[0] ./bin/loop 2
+$ ./bin/loop 8 &
+[1] ./bin/loop 8
+$ echo hello
+hello
+$ ./bin/loop 5 &
+[2] ./bin/loop 5
+$ jobs
+[0] + running	./bin/loop 2
+[1] + running	./bin/loop 8
+[2] + running	./bin/loop 5
+$ sleep 3
+$ jobs
+[0] + done	./bin/loop 2	[0]
+[1] + running	./bin/loop 8
+[2] + running	./bin/loop 5
+$ fg
+[1] + done	./bin/loop 8	[0]
+[2] + done	./bin/loop 5	[0]
+$ jobs
+$ quit
+

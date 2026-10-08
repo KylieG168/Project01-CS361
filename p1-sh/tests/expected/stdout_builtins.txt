@@ -1,0 +1,14 @@
+$ rm TMP.STDOUT
+$ echo hello world > TMP.STDOUT
+$ echo $?
+0
+$ ./bin/cat TMP.STDOUT
+hello world
+$ echo oops > TMP.STDOUT
+$ echo $?
+0
+$ ./bin/cat TMP.STDOUT
+oops
+$ rm TMP.STDOUT
+$ quit
+

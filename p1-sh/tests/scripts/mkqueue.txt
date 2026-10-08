@@ -1,0 +1,9 @@
+mqopen MSG
+mqsend 0 hello
+mqrecv 0 msg
+echo Received message '${msg}'
+mqsend 0 fare thee well
+mqrecv 0 msg
+echo Received message '${msg}'
+mqclose 0
+quit

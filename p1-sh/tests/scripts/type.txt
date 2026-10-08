@@ -1,0 +1,5 @@
+type echo
+type bash
+type nowhere
+type cd type nowhere gzip
+quit

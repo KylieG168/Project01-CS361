@@ -1,0 +1,8 @@
+export A=5
+echo A=${A}
+B=6 echo A=${A} B=${B}
+C=10 echo A=${A} B=${B} C=${C}
+echo ${A}
+echo ${B}
+echo ${C}
+quit

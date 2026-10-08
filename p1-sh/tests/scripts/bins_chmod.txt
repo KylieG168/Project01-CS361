@@ -1,0 +1,13 @@
+./bin/ls -a data
+./bin/ls -s data
+./bin/ls -sa data
+./bin/chmod rw- rw- --- data/empty.txt
+./bin/chmod r-- --- --x data/FIRST.txt
+./bin/chmod rw- rw- rw- data/pwd.txt
+./bin/chmod r-x r-x r-x data/yat.txt
+./bin/chmod rwx --- --- data/.hidden.txt
+./bin/chmod r-x --x r-- data/subdir
+./bin/chmod r-- r-- r-- data/lines.txt
+./bin/ls -ap data
+./bin/head -n 1 Makefile
+quit

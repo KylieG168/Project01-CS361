@@ -1,0 +1,38 @@
+$ ./bin/loop 2 &
+[Init.TOKEN -> Command]
+[Command.FHANDLE -> Number]
+[Number.AMPERSAND -> Background]
+[Background.NEWLINE -> Term]
+  Execute ./bin/loop in background with arguments { ./bin/loop, 2, (null) }
+$ fg
+[Init.TOKEN -> Command]
+[Command.NEWLINE -> Term]
+  Execute fg with arguments { fg, (null) }
+$ ./bin/loop 3 | wc -l &
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.PIPE -> Make_Pipe]
+  Create pipe for output of ./bin/loop
+  Execute ./bin/loop with arguments { ./bin/loop, 3, (null) }
+[Make_Pipe.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.AMPERSAND -> Background]
+[Background.NEWLINE -> Term]
+  Execute wc in background with arguments { wc, -l, (null) }
+$ fg
+[Init.TOKEN -> Command]
+[Command.NEWLINE -> Term]
+  Execute fg with arguments { fg, (null) }
+$ ./bin/loop&
+[Init.TOKEN -> Command]
+[Command.AMPERSAND -> Background]
+[Background.NEWLINE -> Term]
+  Execute ./bin/loop in background with arguments { ./bin/loop, (null) }
+$ kill -INT 0
+[Init.TOKEN -> Command]
+[Command.TOKEN -> Arguments]
+[Arguments.TOKEN -> Arguments]
+[Arguments.NEWLINE -> Term]
+  Execute kill with arguments { kill, -INT, 0, (null) }
+$ quit
+

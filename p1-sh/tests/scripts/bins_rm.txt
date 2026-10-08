@@ -1,0 +1,16 @@
+rm -rf data/TMPSUBDIR
+./bin/rm nowhere_man
+echo $?
+touch data/TMPFILE
+./bin/ls -a data
+./bin/rm data/TMPFILE
+echo $?
+mkdir data/TMPSUBDIR
+./bin/ls -a data
+touch data/TMPSUBDIR/TMPFILE
+./bin/rm data/TMPSUBDIR
+echo $?
+./bin/rm -r data/TMPSUBDIR
+echo $?
+./bin/ls -a data
+quit

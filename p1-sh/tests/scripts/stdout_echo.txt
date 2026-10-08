@@ -1,0 +1,9 @@
+rm TMP.STDOUT
+echo hello world > TMP.STDOUT
+echo $?
+./bin/cat TMP.STDOUT
+echo oops > TMP.STDOUT
+echo $?
+./bin/cat TMP.STDOUT
+rm TMP.STDOUT
+quit

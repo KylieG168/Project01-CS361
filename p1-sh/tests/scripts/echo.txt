@@ -1,0 +1,5 @@
+echo goodbye
+echo hello\nworld
+echo this\nhas\nnewlines
+echo
+quit

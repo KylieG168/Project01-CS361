@@ -1,0 +1,8 @@
+cat nowhere |
+| head
+> out 2>&1
+./bin/segv >
+./bin/segv >> /dev/null
+./bin/segv & > out
+./bin/segv 2>& | > out
+quit

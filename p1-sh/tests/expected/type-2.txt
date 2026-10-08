@@ -1,0 +1,13 @@
+$ type echo
+echo is a shell builtin
+$ type bash
+bash is /bin/bash
+$ type nowhere
+nowhere not found
+$ type cd type nowhere gzip
+cd is a shell builtin
+type is a shell builtin
+nowhere not found
+gzip is /usr/bin/gzip
+$ quit
+

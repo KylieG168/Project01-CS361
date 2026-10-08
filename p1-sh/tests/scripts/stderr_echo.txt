@@ -1,0 +1,4 @@
+echo hello\bworld 2>&1
+echo hello\bworld | cut -d: -f1
+echo hello\bworld 2>&1 | cut -d: -f1
+quit

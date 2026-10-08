@@ -1,0 +1,10 @@
+$ rm TEE.OUT
+$ cat data/lines | tee TEE.OUT
+$ cat TEE.OUT
+$ echo | tee TEE.OUT
+
+$ cat TEE.OUT
+
+$ rm TEE.OUT
+$ quit
+
