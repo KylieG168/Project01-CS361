@@ -14,6 +14,7 @@ static void usage (void);
 int
 main (int argc, char *argv[])
 {
+  FILE *script = stdin;
   if (!get_args (argc, argv, NULL))
     return EXIT_FAILURE;
   return EXIT_SUCCESS;
@@ -29,6 +30,16 @@ get_args (int argc, char **argv, FILE **script)
     {
       switch (ch)
         {
+        case 'b':
+          *script = fopen (optarg, "r");
+          if (*script == NULL)
+          {
+            perror (optarg);
+            return false;
+          }
+          break;
+        case 'f':
+          break;
         case 'h':
           usage ();
           return false;
