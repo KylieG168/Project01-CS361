@@ -31,6 +31,10 @@ shell (FILE *input)
       fflush (stdout);
 
       // Your code should begin here...
+      if (strncmp(buffer, "echo", 4) == 0)
+      {
+        echo(&buffer[5]);
+      }
       if (strncmp(buffer, "quit", 4) == 0)
       {
         break;
