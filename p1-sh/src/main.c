@@ -4,20 +4,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 #include "cmd.h"
 #include "hash.h"
 #include "shell.h"
 
+
 static bool get_args (int, char **, FILE **);
 static void usage (void);
+
 
 int
 main (int argc, char *argv[])
 {
-  if (!get_args (argc, argv, NULL))
+  FILE *in = stdin;
+  if (!get_args (argc, argv, &in))
     return EXIT_FAILURE;
+
+  shell(in);
   return EXIT_SUCCESS;
 }
+
 
 /* Parse the command-line arguments. See the usage documentation below for the
    required interface. */
@@ -25,10 +32,24 @@ static bool
 get_args (int argc, char **argv, FILE **script)
 {
   int ch = 0;
-  while ((ch = getopt (argc, argv, "h")) != -1)
+  while ((ch = getopt (argc, argv, "bh")) != -1)
     {
       switch (ch)
         {
+        case 'b':
+        {
+          FILE *fp = fopen (argv[2], "r");
+          if (fp == NULL)
+          {
+            return false;
+          }
+          else
+          {
+            *script = fp;
+            return true;
+          }
+          break;
+        }
         case 'h':
           usage ();
           return false;
@@ -38,6 +59,7 @@ get_args (int argc, char **argv, FILE **script)
     }
   return true;
 }
+
 
 static void
 usage (void)

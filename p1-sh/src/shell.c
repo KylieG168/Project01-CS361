@@ -31,8 +31,12 @@ shell (FILE *input)
       fflush (stdout);
 
       // Your code should begin here...
-      char *cmd = parse_buffer (buffer);
-      int rc __attribute__ ((unused)) = run_process (cmd);
+      if (strncmp(buffer, "quit", 4) == 0)
+      {
+        break;
+      }
+      // char *cmd = parse_buffer (buffer);
+      // int rc __attribute__ ((unused)) = run_process (cmd);
     }
   printf ("\n");
   hash_destroy ();
