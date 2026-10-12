@@ -9,6 +9,14 @@
 // No command line can be more than 100 characters
 #define MAXLENGTH 100
 
+static bool
+is_cmd (const char *line, const char *name)
+{
+  size_t n = strlen (name);
+  return strncmp (line, name, n) == 0
+        && (line[n] == ' ' || line[n] == '\n' || line[n] == '\0');
+}
+
 void
 shell (FILE *input)
 {
@@ -46,3 +54,4 @@ shell (FILE *input)
   printf ("\n");
   hash_destroy ();
 }
+
