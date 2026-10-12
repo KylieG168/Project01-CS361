@@ -9,3 +9,26 @@ echo (char *message)
   printf ("%s\n", message);
   return 0;
 }
+
+int
+cd (char *message)
+{
+
+  return 0;
+}
+
+int
+pwd (char *message)
+{
+  message[strlen(message) - 1] = '\0';
+  printf ("%s\n", message);
+  return 0;
+}
+
+int
+type (char *message)
+{
+  message[strlen(message) - 1] = '\0';
+  printf ("%s\n", message);
+  return 0;
+}
