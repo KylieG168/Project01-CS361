@@ -32,10 +32,12 @@ static bool
 get_args (int argc, char **argv, FILE **script)
 {
   int ch = 0;
-  while ((ch = getopt (argc, argv, "bh")) != -1)
+  while ((ch = getopt (argc, argv, "b:fh")) != -1)
     {
       switch (ch)
         {
+        case 'f':
+          break;
         case 'b':
         {
           FILE *fp = fopen (argv[2], "r");

@@ -31,16 +31,17 @@ shell (FILE *input)
       fflush (stdout);
 
       // Your code should begin here...
-      if (strncmp(buffer, "echo", 4) == 0)
-      {
-        echo(&buffer[5]);
-      }
-      if (strncmp(buffer, "quit", 4) == 0)
-      {
+      if (buffer[0] == '\n' || buffer[0] == '\0')
+        continue;                      // blank line
+      else if (is_cmd (buffer, "quit"))
         break;
-      }
-      // char *cmd = parse_buffer (buffer);
-      // int rc __attribute__ ((unused)) = run_process (cmd);
+      else if (is_cmd (buffer, "echo"))
+        echo (&buffer[5]);
+      else
+        {
+          char *cmd = parse_buffer (buffer);
+          int rc __attribute__ ((unused)) = run_process (cmd);
+        }
     }
   printf ("\n");
   hash_destroy ();
