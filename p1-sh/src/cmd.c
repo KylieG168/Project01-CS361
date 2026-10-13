@@ -14,12 +14,15 @@ static bool debug_mode = false;
 // You should provide some function like this to serve as the interface to
 // parsing the command line. This function is just a placeholder and you
 // should define your own.
+
+
 void
 cmd_set_debug (bool on)
 {
     debug_mode = on;
 }
 
+/*
 bool
 cmd_debug (void)
 {
@@ -39,6 +42,7 @@ free_args (char **args)
     }
     free (args);
 }
+
 
 char *
 parse_buffer (char *buffer)
@@ -68,7 +72,7 @@ parse_buffer (char *buffer)
         handle_event (fsm, NEWLINE);
     }
 
-    char *result = fsm->*result;
+    char **result = fsm->result;
     if (fsm->args != NULL)
     {
             for (size_t i = 0; i < fsm->nargs; i++)
@@ -81,4 +85,5 @@ parse_buffer (char *buffer)
     free (fsm);
     return result;
 }
+*/
 

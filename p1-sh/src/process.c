@@ -65,6 +65,9 @@ run_process (char *cmd)
   int
   head ()
   {
-    
+    if (arg[1] == NULL)
+    {
+      
+    }
   }
 */
