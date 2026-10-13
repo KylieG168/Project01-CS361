@@ -15,7 +15,7 @@ is_cmd (const char *line, const char *name)
   size_t n = strlen (name);
   return strncmp (line, name, n) == 0
         && (line[n] == ' ' || line[n] == '\n' || line[n] == '\0');
-}
+} 
 
 void
 shell (FILE *input)
@@ -40,7 +40,9 @@ shell (FILE *input)
 
       // Your code should begin here...
       if (buffer[0] == '\n' || buffer[0] == '\0')
-        continue;                      // blank line
+      {
+        continue;
+      }
       else if (is_cmd (buffer, "quit"))
         break;
       else if (is_cmd (buffer, "echo"))

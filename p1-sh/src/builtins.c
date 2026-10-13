@@ -13,8 +13,14 @@ echo (char *message)
 int
 cd (char *message)
 {
-
-  return 0;
+   FILE *fp = fopen (message, "r");
+    if (fp == NULL)
+    {
+      perror(message);
+      return -1;
+    }
+  
+  return execvp (fp, '\0');
 }
 
 int
@@ -28,7 +34,20 @@ pwd (char *message)
 int
 type (char *message)
 {
-  message[strlen(message) - 1] = '\0';
-  printf ("%s\n", message);
-  return 0;
+  if (*message == 'cd' || 
+      *message == 'echo' ||
+      *message == 'pwd' ||
+      *message == 'type')
+  {
+    printf ("cmd is a shell built-in");
+    return 0;
+  }
+
+  FILE *fp = fopen (message, "r");
+    if (fp == NULL)
+    {
+      perror(message);
+      return -1;
+    }
+
 }

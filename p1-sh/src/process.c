@@ -55,14 +55,16 @@ run_process (char *cmd)
   }
   return -1;
 }
+/*
+  int
+  ls ()
+  {
 
-int
-ls ()
-{
+  }
 
-}
-int
-head ()
-{
-  
-}
+  int
+  head ()
+  {
+    
+  }
+*/
