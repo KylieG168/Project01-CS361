@@ -15,7 +15,7 @@ is_cmd (const char *line, const char *name)
   size_t n = strlen (name);
   return strncmp (line, name, n) == 0
         && (line[n] == ' ' || line[n] == '\n' || line[n] == '\0');
-} 
+}
 
 void
 shell (FILE *input)
@@ -50,10 +50,13 @@ shell (FILE *input)
       else
         {
           char *cmd = parse_buffer (buffer);
-          int rc __attribute__ ((unused)) = run_process (cmd);
+          int rc = run_process (cmd);
+          
+          char status_text[16];
+          snprintf (status_text, sizeof (status_text), "%d", rc);
+          hash_insert ("?", status_text);
         }
     }
   printf ("\n");
   hash_destroy ();
 }
-

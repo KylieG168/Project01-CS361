@@ -26,12 +26,12 @@ run_process (char *cmd)
   int argc = 0;
   char *save = NULL;
 
-  char *token = strtok_r (cmd, " \t", &save);
+  char *token = strtok_r (cmd, " \t\r\n", &save);
   while (token != NULL)
     {
       argv[argc] = token;
       argc++;
-      token = strtok_r (NULL, " \t", &save);
+      token = strtok_r (NULL, " \t\r\n", &save);
     }
 
   argv[argc] = NULL;
@@ -89,7 +89,7 @@ run_process (char *cmd)
   {
     if (arg[1] == NULL)
     {
-      
+
     }
   }
 */
