@@ -37,12 +37,14 @@ get_args (int argc, char **argv, FILE **script)
       switch (ch)
         {
         case 'f':
+          parse_buffer (optarg);
           break;
         case 'b':
         {
-          FILE *fp = fopen (argv[2], "r");
+          FILE *fp = fopen (optarg, "r");
           if (fp == NULL)
           {
+            perror(optarg);
             return false;
           }
           else

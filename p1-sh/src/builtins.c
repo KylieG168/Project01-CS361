@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "builtins.h"
-
+#include <unistd.h>
 int
 echo (char *message)
 {
@@ -9,3 +9,4 @@ echo (char *message)
   printf ("%s\n", message);
   return 0;
 }
+

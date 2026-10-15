@@ -77,3 +77,19 @@ run_process (char *cmd)
     }
   return -1;
 }
+/*
+  int
+  ls ()
+  {
+
+  }
+
+  int
+  head ()
+  {
+    if (arg[1] == NULL)
+    {
+      
+    }
+  }
+*/

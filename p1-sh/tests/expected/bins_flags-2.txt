@@ -31,6 +31,6 @@ drwxr-x--x subdir
 $ ./bin/head -n 1 Makefile
 #
 $ wc -l Makefile 
-     118 Makefile
+     131 Makefile
 $ quit
 
