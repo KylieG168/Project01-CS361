@@ -9,6 +9,7 @@
 
 #include "effects.h"
 #include "model.h"
+extern bool fsm_debug;
 
 /* Executed when starting to process a new command line. The fsm_t
   should have been updated to include a pointer to the current token.
@@ -17,7 +18,10 @@
 void
 start_command (fsm_t *cmdmodel)
 {
-  printf ("Starting new command: %s\n", cmdmodel->current_token);
+  if (fsm_debug)
+    {
+      printf ("Starting new command: %s\n", cmdmodel->current_token);
+    }
   // TODO: Copy the current token to store it in the FSM's command
   // field. Next, create the FSM's args array (length MAX_ARGUMENTS)
   // set the current token as args[0], and initialize nargs to be
@@ -59,7 +63,7 @@ execute (fsm_t *cmdmodel)
 
   // TODO: Print out the argument list similar to the format shown and free
   // the args array.
-  if (cmdmodel->debug)
+  if (fsm_debug)
   {
     printf ("Execute %s with arguments {", cmdmodel->command);
     for (size_t i = 0; i <= cmdmodel->nargs; i++)

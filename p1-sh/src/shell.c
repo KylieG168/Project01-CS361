@@ -40,13 +40,29 @@ shell (FILE *input)
 
       // Your code should begin here...
       if (buffer[0] == '\n' || buffer[0] == '\0')
-      {
-        continue;
-      }
+        {
+          continue;
+        }
       else if (is_cmd (buffer, "quit"))
-        break;
+        {
+          break;
+        }
       else if (is_cmd (buffer, "echo"))
-        echo (&buffer[5]);
+        {
+          echo (&buffer[5]);
+        }
+      else if (is_cmd(buffer, "cd"))
+        {
+          cd(&buffer[3]);
+        }
+      else if (is_cmd(buffer, "pwd"))
+        {
+          pwd (NULL);
+        }
+      else if (is_cmd(buffer, "type"))
+        {
+          type (&buffer[5]);
+        }
       else
         {
           char *cmd = parse_buffer (buffer);

@@ -8,16 +8,34 @@
 
 #include "cmd.h"
 #include "effects.h"
-#include "model.c"
+#include "model.h"
 
-static bool debug_mode = false;
 // You should provide some function like this to serve as the interface to
 // parsing the command line. This function is just a placeholder and you
 // should define your own.
 
+<<<<<<< HEAD
 char *
 parse_buffer (char *buffer)
 {
     return '\0';
+=======
+// Returns the line without leading blanks or the trailing newline.
+char *
+parse_buffer (char *buffer)
+{
+    char *command = buffer;
+    while (*command == ' ' || *command == '\t')
+        {
+            command++;
+        }
+
+    size_t len = strlen (command);
+    while (len > 0 && (command[len - 1] == '\n' || command[len - 1] == '\r'))
+        {
+            command[--len] = '\0';
+        }
+    return command;
+>>>>>>> Kylies-work
 }
 
