@@ -112,10 +112,10 @@ handle_event (fsm_t *fsm, event_t event)
   action_t effect;
   state_t next = cmdline_transition (fsm, event, &effect);
   if (fsm->debug)
-  {
-    printf ("[%s.%s -> %s]\n", state_name (fsm->state), event_name (event),
-          state_name (next));
-  }
+    {
+      printf ("[%s.%s -> %s]\n", state_name (fsm->state), event_name (event),
+              state_name (next));
+    }
   // TODO: If the state/event combination is valid, execute
   // the transition and effect function (if there is one).
   // If the next state is Term (terminated), return false.

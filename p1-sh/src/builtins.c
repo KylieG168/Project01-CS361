@@ -1,8 +1,8 @@
+#include "builtins.h"
+#include "hash.h"
 #include <stdio.h>
 #include <string.h>
-#include "builtins.h"
 #include <unistd.h>
-#include "hash.h"
 int
 echo (char *message)
 {
@@ -13,8 +13,7 @@ echo (char *message)
   char *word = strtok_r (message, " \t\r\n", &save);
   char delimiter = ' ';
 
-  if (word != NULL && strncmp (word, "-d", 2) == 0
-      && strlen (word) == 3)
+  if (word != NULL && strncmp (word, "-d", 2) == 0 && strlen (word) == 3)
     {
       delimiter = word[2];
       word = strtok_r (NULL, " \t\r\n", &save);

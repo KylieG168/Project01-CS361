@@ -18,9 +18,9 @@ int
 run_process (char *cmd)
 {
   if (cmd == NULL)
-  {
-    return 0;
-  }
+    {
+      return 0;
+    }
 
   char *argv[101] = { NULL };
   int argc = 0;
@@ -41,13 +41,6 @@ run_process (char *cmd)
       return 0;
     }
 
-  // argv[0] = strtok_r (cmd, " \t", &save);
-  // if (argv[0] == NULL)
-  // {
-  //   return 0;
-  // }
-  // argv[1] = strtok_r (NULL, " \t", &save);
-
   fflush (stdout);
 
   pid_t pid = fork ();
@@ -65,7 +58,7 @@ run_process (char *cmd)
     }
 
   int status = 0;
-  if ( waitpid (pid, &status, 0) == -1)
+  if (waitpid (pid, &status, 0) == -1)
     {
       perror ("waitpid");
       return -1;
@@ -77,19 +70,3 @@ run_process (char *cmd)
     }
   return -1;
 }
-/*
-  int
-  ls ()
-  {
-
-  }
-
-  int
-  head ()
-  {
-    if (arg[1] == NULL)
-    {
-
-    }
-  }
-*/

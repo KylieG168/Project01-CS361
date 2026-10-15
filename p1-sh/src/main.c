@@ -1,18 +1,14 @@
+#include "cmd.h"
+#include "hash.h"
+#include "shell.h"
 #include <assert.h>
 #include <getopt.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-
-#include "cmd.h"
-#include "hash.h"
-#include "shell.h"
-
-
 static bool get_args (int, char **, FILE **);
 static void usage (void);
-
 
 int
 main (int argc, char *argv[])
@@ -21,10 +17,9 @@ main (int argc, char *argv[])
   if (!get_args (argc, argv, &in))
     return EXIT_FAILURE;
 
-  shell(in);
+  shell (in);
   return EXIT_SUCCESS;
 }
-
 
 /* Parse the command-line arguments. See the usage documentation below for the
    required interface. */
@@ -40,20 +35,20 @@ get_args (int argc, char **argv, FILE **script)
           parse_buffer (optarg);
           break;
         case 'b':
-        {
-          FILE *fp = fopen (optarg, "r");
-          if (fp == NULL)
           {
-            perror(optarg);
-            return false;
+            FILE *fp = fopen (optarg, "r");
+            if (fp == NULL)
+              {
+                perror (optarg);
+                return false;
+              }
+            else
+              {
+                *script = fp;
+                return true;
+              }
+            break;
           }
-          else
-          {
-            *script = fp;
-            return true;
-          }
-          break;
-        }
         case 'h':
           usage ();
           return false;
@@ -63,7 +58,6 @@ get_args (int argc, char **argv, FILE **script)
     }
   return true;
 }
-
 
 static void
 usage (void)

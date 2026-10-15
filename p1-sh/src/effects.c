@@ -60,25 +60,26 @@ execute (fsm_t *cmdmodel)
   // TODO: Print out the argument list similar to the format shown and free
   // the args array.
   if (cmdmodel->debug)
-  {
-    printf ("Execute %s with arguments {", cmdmodel->command);
-    for (size_t i = 0; i <= cmdmodel->nargs; i++)
-      {
-        printf (" %s%s", cmdmodel->args[i], (i < cmdmodel->nargs) ? "," : "");
-      }
-    printf (" }\n");
+    {
+      printf ("Execute %s with arguments {", cmdmodel->command);
+      for (size_t i = 0; i <= cmdmodel->nargs; i++)
+        {
+          printf (" %s%s", cmdmodel->args[i],
+                  (i < cmdmodel->nargs) ? "," : "");
+        }
+      printf (" }\n");
 
-    free (cmdmodel->command);
-    for (size_t i = 0; i < cmdmodel->nargs; i++)
-      {
-        free (cmdmodel->args[i]);
-      }
-    free (cmdmodel->args);
-  }
+      free (cmdmodel->command);
+      for (size_t i = 0; i < cmdmodel->nargs; i++)
+        {
+          free (cmdmodel->args[i]);
+        }
+      free (cmdmodel->args);
+    }
   else
-  {
-    cmdmodel->result = cmdmodel->args;
-  }
+    {
+      cmdmodel->result = cmdmodel->args;
+    }
 
   cmdmodel->command = NULL;
   cmdmodel->args = NULL;

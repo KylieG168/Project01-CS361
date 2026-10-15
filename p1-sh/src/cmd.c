@@ -21,7 +21,6 @@
 //     return buffer;
 // }
 
-
 // Temporary pass-through parser while FSM integration is unfinished.
 
 #include "cmd.h"
