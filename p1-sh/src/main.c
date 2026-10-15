@@ -12,6 +12,7 @@
 
 static bool get_args (int, char **, FILE **);
 static void usage (void);
+bool fsm_debug = false; 
 
 
 int
@@ -37,7 +38,7 @@ get_args (int argc, char **argv, FILE **script)
       switch (ch)
         {
         case 'f':
-          parse_buffer (optarg);
+          fsm_debug = true;
           break;
         case 'b':
         {
@@ -63,7 +64,6 @@ get_args (int argc, char **argv, FILE **script)
     }
   return true;
 }
-
 
 static void
 usage (void)
