@@ -22,15 +22,31 @@ run_process (char *cmd)
     return 0;
   }
 
-  char *argv[3] = { NULL, NULL, NULL };
+  char *argv[101] = { NULL };
+  int argc = 0;
   char *save = NULL;
 
-  argv[0] = strtok_r (cmd, " \t", &save);
-  if (argv[0] == NULL)
-  {
-    return 0;
-  }
-  argv[1] = strtok_r (NULL, " \t", &save);
+  char *token = strtok_r (cmd, " \t", &save);
+  while (token != NULL)
+    {
+      argv[argc] = token;
+      argc++;
+      token = strtok_r (NULL, " \t", &save);
+    }
+
+  argv[argc] = NULL;
+
+  if (argc == 0)
+    {
+      return 0;
+    }
+
+  // argv[0] = strtok_r (cmd, " \t", &save);
+  // if (argv[0] == NULL)
+  // {
+  //   return 0;
+  // }
+  // argv[1] = strtok_r (NULL, " \t", &save);
 
   fflush (stdout);
 
@@ -40,6 +56,7 @@ run_process (char *cmd)
       perror ("fork");
       return -1;
     }
+
   if (pid == 0)
     {
       execvp (argv[0], argv);
@@ -48,10 +65,15 @@ run_process (char *cmd)
     }
 
   int status = 0;
-  waitpid (pid, &status, 0);
+  if ( waitpid (pid, &status, 0) == -1)
+    {
+      perror ("waitpid");
+      return -1;
+    }
+
   if (WIFEXITED (status))
-  {
-    return WEXITSTATUS (status);
-  }
+    {
+      return WEXITSTATUS (status);
+    }
   return -1;
 }
