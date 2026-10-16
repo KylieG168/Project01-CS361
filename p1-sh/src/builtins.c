@@ -9,13 +9,25 @@
 int
 echo (char *message)
 {
-  size_t len = strnlen (message, MAX_LINE);
-  if (len > 0 && message[len - 1] == '\n')
+    size_t len = strnlen(message, MAX_LINE);
+    if (len > 0 && message[len - 1] == '\n')
+        message[len - 1] = '\0';
+
+    for (int i = 0; message[i] != '\0'; i++)
     {
-      message[len - 1] = '\0';
+        if (message[i] == '\\' && message[i+1] == 'n')
+        {
+            printf("\n");
+            i++;
+        }
+        else
+        {
+            printf("%c", message[i]);
+        }
     }
-  printf ("%s\n", message);
-  return 0;
+
+    printf("\n");
+    return 0;
 }
 
 int
@@ -37,7 +49,7 @@ cd (char *message)
   if (chdir (message) != 0)
     {
       perror (message);
-      return 1;
+      return -1;
     }
   return 0;
 }
@@ -75,7 +87,7 @@ type (char *message)
     {
       if (strcmp (message, names[i]) == 0)  // if it is a builtin
         {
-          printf ("%s is a shell built-in\n", message);
+          printf ("%s is a shell builtin\n", message);
           return 0;
         }
     }
@@ -105,7 +117,7 @@ type (char *message)
         }
       free (copy); //frees the copy if it is not executable
     }
-  printf ("%s: not found\n", message);
+  printf ("%s not found\n", message);
   return 1;
 
 }
