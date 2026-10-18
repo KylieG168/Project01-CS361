@@ -64,9 +64,11 @@ cmdline_init (void)
 state_t
 cmdline_transition (fsm_t *fsm, event_t event, action_t *effect)
 {
-  assert (fsm->state <= NST);
-  assert (event <= NIL);
-  assert (event < NIL);
+  // assert (fsm->state <= NST);
+  // assert (event <= NIL);
+  // assert (event < NIL);
+  assert (fsm->state >= 0 && fsm->state < NUM_STATES);
+  assert (event >= 0 && event < NUM_EVENTS);
 
   state_t next = _transitions[fsm->state][event];
   *effect = (next != NST) ? _effects[fsm->state][event] : NULL;
@@ -130,17 +132,4 @@ handle_event (fsm_t *fsm, event_t event)
         }
     }
   return fsm->state != Term;
-}
-
-/* Given a string, return the event type. Do not modify this function. */
-event_t
-lookup (char *token)
-{
-  if (!strcmp (token, "|"))
-    return PIPE;
-
-  if (!strcmp (token, "NL"))
-    return NEWLINE;
-
-  return TOKEN;
 }

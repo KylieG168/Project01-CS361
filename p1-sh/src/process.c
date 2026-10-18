@@ -70,3 +70,37 @@ run_process (char *cmd)
     }
   return -1;
 }
+
+int
+run_args (char **argv)
+  {
+   if (argv == NULL || argv[0] == NULL)
+    return 0;
+
+  fflush (stdout);
+  pid_t pid = fork ();
+  if (pid < 0)
+    {
+      perror ("fork");
+      return -1;
+    }
+
+  if (pid == 0)
+    {
+      execvp (argv[0], argv);
+      perror (argv[0]);
+      _exit (127);
+    }
+
+  int status = 0;
+  if (waitpid (pid, &status, 0) == -1)
+    {
+      perror ("waitpid");
+      return -1;
+    }
+
+  if (WIFEXITED (status))
+    return WEXITSTATUS (status);
+
+  return -1;
+  }

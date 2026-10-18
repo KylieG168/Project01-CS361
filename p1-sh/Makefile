@@ -20,7 +20,7 @@
 
 EXE=dukesh
 UTILS=ls loop segv chmod head mkdir rm touch file repeat cat tee
-MODS=main.o process.o shell.o builtins.o cmd.o hash.o
+MODS=main.o process.o shell.o builtins.o cmd.o hash.o model.o effects.o
 OBJS=
 LIBS=
 
@@ -102,4 +102,3 @@ clean:
 	make -C tests clean
 
 .PHONY: default clean test check style submit status
-

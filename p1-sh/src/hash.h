@@ -1,6 +1,7 @@
 #ifndef __cs361_hash__
 #define __cs361_hash__
 
+#include <stddef.h>
 #include <stdbool.h>
 
 void hash_dump (void); // for debugging if needed
