@@ -51,7 +51,6 @@ get_args (int argc, char **argv, FILE **script)
             else
               {
                 *script = fp;
-                return true;
               }
             break;
           }
