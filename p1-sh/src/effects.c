@@ -17,8 +17,6 @@
 void
 start_command (fsm_t *cmdmodel)
 {
-  if (cmdmodel->debug)
-    printf ("Starting new command: %s\n", cmdmodel->current_token);
   // TODO: Copy the current token to store it in the FSM's command
   // field. Next, create the FSM's args array (length MAX_ARGUMENTS)
   // set the current token as args[0], and initialize nargs to be
@@ -40,8 +38,6 @@ append (fsm_t *cmdmodel)
   if (cmdmodel->nargs >= MAX_ARGUMENTS)
     return;
 
-  if (cmdmodel->debug)
-    printf ("Appending %s to the argument list\n", cmdmodel->current_token);
   assert (cmdmodel->args != NULL);
 
   // TODO: Store the current token into the args array and increment nargs
@@ -63,10 +59,10 @@ execute (fsm_t *cmdmodel)
   // the args array.
   if (cmdmodel->debug)
     {
-      printf ("Execute %s with arguments {", cmdmodel->command);
+      printf ("  Execute %s with arguments {", cmdmodel->command);
       for (size_t i = 0; i < cmdmodel->nargs; i++)
           printf (" %s,", cmdmodel->args[i]);
-      printf (" NULL }\n");
+      printf (" (null) }\n");
 
       for (size_t i = 0; i < cmdmodel->nargs; i++)
           free (cmdmodel->args[i]);
@@ -90,7 +86,7 @@ void
 link_commands (fsm_t *cmdmodel)
 {
   if (cmdmodel->debug)
-    printf ("Set up pipe\n");
+    printf ("  Create pipe for output of %s\n", cmdmodel->command);
   execute (cmdmodel);
 }
 

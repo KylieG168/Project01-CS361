@@ -126,11 +126,10 @@ shell (FILE *input)
           else
             {
               rc = run_args (fsm->result);
-
-              char status_text[16];
-              snprintf (status_text, sizeof (status_text), "%d", rc);
-              hash_insert ("?", status_text);
             }
+          char status_text[16];
+          snprintf (status_text, sizeof (status_text), "%d", rc);
+          hash_insert ("?", status_text);
         }
       if (fsm->result != NULL)
         {

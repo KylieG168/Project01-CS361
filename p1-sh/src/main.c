@@ -19,6 +19,11 @@ main (int argc, char *argv[])
     return EXIT_FAILURE;
 
   shell (in);
+  if (in != stdin)
+    {
+      if (fclose (in) == EOF)
+        return EXIT_FAILURE;
+    }
   return EXIT_SUCCESS;
 }
 
