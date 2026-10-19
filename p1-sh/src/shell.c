@@ -54,18 +54,34 @@ shell (FILE *input)
       if (fsm == NULL)
         break;
       fsm->debug = fsm_debug;
-      char *save = NULL;
 
-      for (char *tok = strtok_r (buffer, " \t\r\n", &save);
-           tok != NULL;
-           tok = strtok_r (NULL, " \t\r\n", &save))
+      const char *cursor = buffer;
+      char token[MAXLENGTH];
+      bool parsing = true;
+
+      while (parsing && next_token (&cursor, token, sizeof (token)))
         {
-          fsm->current_token = tok;
-          handle_event (fsm, lookup (tok));
+          event_t event = lookup (token);
+          if (event == FHANDLE)
+            {
+              const char *lookahead = cursor;
+              char next[MAXLENGTH];
+
+              if (next_token (&lookahead, next, sizeof (next)) && strcmp (next, ">") != 0 && strcmp (next, "|") != 0 && strcmp (next, "&") != 0)
+                {
+                  event = TOKEN;
+                }
+            }
+
+          fsm->current_token = token;
+          parsing = handle_event (fsm, event);
         }
 
-      fsm->current_token = "NL";
-      handle_event (fsm, NEWLINE);
+      if (parsing)
+        {
+          fsm->current_token = "NL";
+          handle_event (fsm, NEWLINE);
+        }
 
       if (fsm->result)
         {

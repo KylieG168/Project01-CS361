@@ -9,5 +9,8 @@ void execute (fsm_t *);
 void link_commands (fsm_t *);
 void error_pipe (fsm_t *);
 void error_newline (fsm_t *);
+void mark_background (fsm_t *);
+void remember_number (fsm_t *);
+void append_after_number (fsm_t *);
 
 #endif

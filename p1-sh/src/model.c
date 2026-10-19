@@ -12,22 +12,28 @@
 // the next state for a given event. If there is no transition defined, that
 // entry should be NST ("no state").
 static state_t const _transitions[NUM_STATES][NUM_EVENTS] = {
-  { Command, Term, NST },         // Init
-  { Arguments, Make_Pipe, Term }, // Command
-  { Arguments, Make_Pipe, Term }, // Arguments
-  { Command, Term, Term },        // Make_Pip
-  { NST, NST, NST }               // TERM
+  // TOKEN, PIPE, NEWLINE, AMPERSAND, FHANDLE
+  { Command, Term, NST, Term, Command },         // Init
+  { Arguments, Make_Pipe, Term, Background, Number }, // Command
+  { Arguments, Make_Pipe, Term, Background, Number }, // Arguments
+  { Command, Term, Term, Term, Command },        // Make_Pipe
+  { Term, Term, Term, Term, Term }, // Background
+  { Arguments, Make_Pipe, Term, Background, Number }, // Number
+  { NST, NST, NST, NST, NST }               // TERM
 };
 
 // TODO: Create a table mapping states/events to the effect functions. If
 // there is no valid transition, the entry here would be NULL because actions
 // are function pointers.
 static action_t const _effects[NUM_STATES][NUM_EVENTS] = {
-  { start_command, error_pipe, NULL },          // Init
-  { append, link_commands, execute },           // Command
-  { append, link_commands, execute },           // Arguments
-  { start_command, error_pipe, error_newline }, // Make_Pip
-  { NULL, NULL, NULL }                          // TERM
+  // TOKEN, PIPE, NEWLINE, AMPERSAND, FHANDLE
+  { start_command, error_pipe, NULL, NULL, start_command },          // Init
+  { append, link_commands, execute, mark_background, remember_number },           // Command
+  { append, link_commands, execute, mark_background, remember_number },           // Arguments
+  { start_command, error_pipe, error_newline, NULL, start_command }, // Make_Pip
+  { NULL, NULL, execute, NULL, NULL }, // Background
+  { append_after_number, link_commands, execute, mark_background, remember_number }, // Number
+  { NULL, NULL, NULL, NULL, NULL }                          // TERM
 };
 
 static state_t cmdline_transition (fsm_t *fsm, event_t event,
@@ -83,7 +89,7 @@ event_name (event_t evt)
   assert (evt <= NIL);
 
   // Event names for printing out
-  const char *names[] = { "TOKEN", "PIPE", "NEWLINE", "NIL" };
+  const char *names[] = { "TOKEN", "PIPE", "NEWLINE", "AMPERSAND", "FHANDLE", "NIL" };
   return names[evt];
 }
 
@@ -95,7 +101,7 @@ state_name (state_t st)
 
   // State names for printing out
   const char *names[]
-      = { "Init", "Command", "Arguments", "Make_Pipe", "Term", "NST" };
+      = { "Init", "Command", "Arguments", "Make_Pipe", "Background", "Number", "Term", "NST" };
   return names[st];
 }
 

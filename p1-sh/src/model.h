@@ -34,6 +34,8 @@ struct fsm
   char *current_token; // current token being processed
   bool debug;
   char **result;
+  bool background;
+  int pending_number;
 };
 
 // Generic entry point for handling events
@@ -41,7 +43,7 @@ bool handle_event (fsm_t *, event_t);
 
 // Additional definitions specific to an FSM for command line processing
 
-#define MAX_ARGUMENTS 10
+#define MAX_ARGUMENTS 100
 
 // Events
 typedef enum
@@ -49,6 +51,8 @@ typedef enum
   TOKEN,   // normal command-line token
   PIPE,    // vertical bar character
   NEWLINE, // newline at the end of the command
+  AMPERSAND,
+  FHANDLE,
   NIL      // invalid non-event
 } cmdevt_t;
 #define NUM_EVENTS NIL
@@ -60,6 +64,8 @@ typedef enum
   Command,   // establishing the command name
   Arguments, // building the argument list
   Make_Pipe, // linking the commands together for a pipe
+  Background,
+  Number,
   Term,      // terminal state (execute program or error)
   NST        // invalid non-state
 } cmdst_t;

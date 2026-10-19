@@ -38,5 +38,44 @@ lookup(char *token)
     if (!strcmp(token, "NL"))
         return NEWLINE;
 
+    if (!strcmp (token, "&"))
+        return AMPERSAND;
+
+    if (!strcmp (token, "1") || !strcmp (token, "2"))
+        return FHANDLE;
     return TOKEN;
+}
+
+bool
+next_token (const char **cursor, char *token, size_t capacity)
+{
+    const char *p = *cursor;
+    while (*p == ' ' || *p == '\t' || *p == '\r' || *p == '\n')
+        p++;
+
+    if (*p == '\0')
+        {
+            *cursor = p;
+            return false;
+        }
+
+    size_t length = 0;
+
+    if (*p == '|' || *p == '>' || *p == '&')
+        {
+            token[length++] = *p++;
+        }
+    else
+        {
+            while (*p != '\0' && *p != ' ' && *p != '\t' && *p != '\r' && *p != '\n' && *p != '|' && *p != '>' && *p != '&')
+                {
+                    if (length + 1 >= capacity)
+                        return false;
+
+                    token[length++] = *p++;
+                }
+        }
+    token[length] = '\0';
+    *cursor = p;
+    return true;
 }
