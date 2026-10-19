@@ -1,13 +1,13 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "builtins.h"
 #include "cmd.h"
-#include "hash.h"
-#include "process.h"
-#include "model.h"
 #include "effects.h"
+#include "hash.h"
+#include "model.h"
+#include "process.h"
 
 extern bool fsm_debug;
 
@@ -19,7 +19,7 @@ is_cmd (const char *line, const char *name)
 {
   size_t n = strlen (name);
   return strncmp (line, name, n) == 0
-        && (line[n] == ' ' || line[n] == '\n' || line[n] == '\0');
+         && (line[n] == ' ' || line[n] == '\n' || line[n] == '\0');
 }
 
 void
@@ -67,7 +67,9 @@ shell (FILE *input)
               const char *lookahead = cursor;
               char next[MAXLENGTH];
 
-              if (next_token (&lookahead, next, sizeof (next)) && strcmp (next, ">") != 0 && strcmp (next, "|") != 0 && strcmp (next, "&") != 0)
+              if (next_token (&lookahead, next, sizeof (next))
+                  && strcmp (next, ">") != 0 && strcmp (next, "|") != 0
+                  && strcmp (next, "&") != 0)
                 {
                   event = TOKEN;
                 }

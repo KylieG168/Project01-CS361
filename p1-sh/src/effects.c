@@ -53,7 +53,7 @@ flush_number (fsm_t *cmdmodel)
   if (cmdmodel->pending_number == 0)
     return;
 
-  char number[2] = { (char) ('0' + cmdmodel->pending_number), '\0'};
+  char number[2] = { (char)('0' + cmdmodel->pending_number), '\0' };
 
   char *saved_token = cmdmodel->current_token;
   cmdmodel->current_token = number;
@@ -91,13 +91,14 @@ execute (fsm_t *cmdmodel)
   // the args array.
   if (cmdmodel->debug)
     {
-      printf ("  Execute %s%s with arguments {", cmdmodel->command, cmdmodel->background ? " in background" : "");
+      printf ("  Execute %s%s with arguments {", cmdmodel->command,
+              cmdmodel->background ? " in background" : "");
       for (size_t i = 0; i < cmdmodel->nargs; i++)
-          printf (" %s,", cmdmodel->args[i]);
+        printf (" %s,", cmdmodel->args[i]);
       printf (" (null) }\n");
 
       for (size_t i = 0; i < cmdmodel->nargs; i++)
-          free (cmdmodel->args[i]);
+        free (cmdmodel->args[i]);
 
       free (cmdmodel->args);
     }

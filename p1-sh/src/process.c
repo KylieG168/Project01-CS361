@@ -73,8 +73,8 @@ run_process (char *cmd)
 
 int
 run_args (char **argv)
-  {
-   if (argv == NULL || argv[0] == NULL)
+{
+  if (argv == NULL || argv[0] == NULL)
     return 0;
 
   fflush (stdout);
@@ -103,4 +103,4 @@ run_args (char **argv)
     return WEXITSTATUS (status);
 
   return -1;
-  }
+}

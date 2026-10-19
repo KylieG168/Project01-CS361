@@ -53,7 +53,7 @@ typedef enum
   NEWLINE, // newline at the end of the command
   AMPERSAND,
   FHANDLE,
-  NIL      // invalid non-event
+  NIL // invalid non-event
 } cmdevt_t;
 #define NUM_EVENTS NIL
 
@@ -66,8 +66,8 @@ typedef enum
   Make_Pipe, // linking the commands together for a pipe
   Background,
   Number,
-  Term,      // terminal state (execute program or error)
-  NST        // invalid non-state
+  Term, // terminal state (execute program or error)
+  NST   // invalid non-state
 } cmdst_t;
 #define NUM_STATES NST
 

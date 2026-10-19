@@ -3,11 +3,11 @@
 // the generic interface for parsing the command line only. All execution
 // of the lines should be done elsewhere and not part of the FSM.
 
-#include <stdio.h>
-#include <string.h>
+#include "cmd.h"
 #include "effects.h"
 #include "model.h"
-#include "cmd.h"
+#include <stdio.h>
+#include <string.h>
 
 // You should provide some function like this to serve as the interface to
 // parsing the command line. This function is just a placeholder and you
@@ -15,67 +15,68 @@
 
 // Returns the line without leading blanks or the trailing newline.
 char *
-parse_buffer(char *buffer)
+parse_buffer (char *buffer)
 {
-    char *command = buffer;
+  char *command = buffer;
 
-    while (*command == ' ' || *command == '\t')
-        command++;
+  while (*command == ' ' || *command == '\t')
+    command++;
 
-    size_t len = strlen(command);
-    while (len > 0 && (command[len - 1] == '\n' || command[len - 1] == '\r'))
-        command[--len] = '\0';
+  size_t len = strlen (command);
+  while (len > 0 && (command[len - 1] == '\n' || command[len - 1] == '\r'))
+    command[--len] = '\0';
 
-    return command;
+  return command;
 }
 
 event_t
-lookup(char *token)
+lookup (char *token)
 {
-    if (!strcmp(token, "|"))
-        return PIPE;
+  if (!strcmp (token, "|"))
+    return PIPE;
 
-    if (!strcmp(token, "NL"))
-        return NEWLINE;
+  if (!strcmp (token, "NL"))
+    return NEWLINE;
 
-    if (!strcmp (token, "&"))
-        return AMPERSAND;
+  if (!strcmp (token, "&"))
+    return AMPERSAND;
 
-    if (!strcmp (token, "1") || !strcmp (token, "2"))
-        return FHANDLE;
-    return TOKEN;
+  if (!strcmp (token, "1") || !strcmp (token, "2"))
+    return FHANDLE;
+  return TOKEN;
 }
 
 bool
 next_token (const char **cursor, char *token, size_t capacity)
 {
-    const char *p = *cursor;
-    while (*p == ' ' || *p == '\t' || *p == '\r' || *p == '\n')
-        p++;
+  const char *p = *cursor;
+  while (*p == ' ' || *p == '\t' || *p == '\r' || *p == '\n')
+    p++;
 
-    if (*p == '\0')
+  if (*p == '\0')
+    {
+      *cursor = p;
+      return false;
+    }
+
+  size_t length = 0;
+
+  if (*p == '|' || *p == '>' || *p == '&')
+    {
+      token[length++] = *p++;
+    }
+  else
+    {
+      while (*p != '\0' && *p != ' ' && *p != '\t' && *p != '\r' && *p != '\n'
+             && *p != '|' && *p != '>' && *p != '&')
         {
-            *cursor = p;
+          if (length + 1 >= capacity)
             return false;
-        }
 
-    size_t length = 0;
-
-    if (*p == '|' || *p == '>' || *p == '&')
-        {
-            token[length++] = *p++;
+          token[length++] = *p++;
         }
-    else
-        {
-            while (*p != '\0' && *p != ' ' && *p != '\t' && *p != '\r' && *p != '\n' && *p != '|' && *p != '>' && *p != '&')
-                {
-                    if (length + 1 >= capacity)
-                        return false;
-
-                    token[length++] = *p++;
-                }
-        }
-    token[length] = '\0';
-    *cursor = p;
-    return true;
+    }
+  token[length] = '\0';
+  *cursor = p;
+  return true;
 }
