@@ -22,3 +22,7 @@ tests/utests.txt
 # Ignore all vscode stuff and NFS files
 **/.nfs*
 **/.vscode
+data/.hidden.txt
+data/yat.txt
+tests/code/
+tests/code/

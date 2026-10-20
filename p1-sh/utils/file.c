@@ -9,9 +9,9 @@
 
 typedef struct
 {
-  unsigned char head[HEAD_SIZE];
-  size_t total;
-  bool ascii;
+  unsigned char head[HEAD_SIZE];   /* first bytes of the file */
+  size_t total;                    /* number of bytes in the file */
+  bool ascii;                      /* every byte is 0..127 */
 } scan_t;
 
 static void usage (void);
@@ -44,6 +44,7 @@ is_elf (const unsigned char *h)
   return h[0] == 0x7f && h[1] == 'E' && h[2] == 'L' && h[3] == 'F';
 }
 
+/* Recognize the four Mach-O magic numbers; report size and byte order. */
 static bool
 macho_kind (const unsigned char *h, bool *is64, bool *little)
 {
@@ -95,6 +96,7 @@ cpu_name (unsigned int cpu, bool is64)
     }
 }
 
+/* Copy the interpreter path from the "#!" line into out. */
 static void
 shebang_interp (FILE *fp, char *out, size_t size)
 {
@@ -122,7 +124,7 @@ is_makefile (const char *path)
   return strcmp (base, "Makefile") == 0 || strcmp (base, "makefile") == 0;
 }
 
-
+/* Build the -t description (the part before the comma). */
 static void
 classify (const char *path, FILE *fp, const scan_t *s, char *out, size_t size)
 {
