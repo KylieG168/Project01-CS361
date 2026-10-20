@@ -73,7 +73,8 @@ shell (FILE *input)
             {
               if (!strcmp (fsm->result[i], "$?"))
                 {
-                  char *replacement = strdup (hash_find ("?"));
+                  const char *code = hash_find ("?");
+                  char *replacement = strdup (code != NULL ? code : "");
                   if (replacement == NULL)
                     continue;
                   free (fsm->result[i]);
@@ -130,6 +131,7 @@ shell (FILE *input)
           char status_text[16];
           snprintf (status_text, sizeof (status_text), "%d", rc);
           hash_insert ("?", status_text);
+                    fprintf (stderr, "DEBUG rc=%d stored=%s\n", rc, hash_find ("?"));
         }
       if (fsm->result != NULL)
         {
