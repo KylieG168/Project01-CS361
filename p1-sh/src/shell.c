@@ -113,7 +113,8 @@ shell (FILE *input)
             {
               if (!strcmp (fsm->result[i], "$?"))
                 {
-                  char *replacement = strdup (hash_find ("?"));
+                  const char *code = hash_find ("?");
+                  char *replacement = strdup (code != NULL ? code : "");
                   if (replacement == NULL)
                     continue;
                   free (fsm->result[i]);
@@ -171,12 +172,8 @@ shell (FILE *input)
           snprintf (status_text, sizeof (status_text), "%d", rc);
           hash_insert ("?", status_text);
         }
-      if (fsm->result != NULL)
+      if (fsm->commands != NULL)
         {
-          // for (size_t i = 0; fsm->result[i] != NULL; i++)
-          //   free (fsm->result[i]);
-
-          // free (fsm->result);
           parsed_command_t *node = fsm->commands;
 
           while (node != NULL)
