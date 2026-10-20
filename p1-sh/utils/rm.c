@@ -18,7 +18,7 @@ remove_tree (const char *path)
       return 1;
     }
 
-  if (!S_ISDIR (st.st_mode))          /* a plain file: just delete it */
+  if (!S_ISDIR (st.st_mode))
     {
       if (unlink (path) != 0)
         {
@@ -41,21 +41,21 @@ remove_tree (const char *path)
     {
       if (strcmp (entry->d_name, ".") == 0
           || strcmp (entry->d_name, "..") == 0)
-        continue;                     /* never follow . or .. */
+        continue;
 
       char child[PATH_MAX];
       int n = snprintf (child, sizeof child, "%s/%s", path, entry->d_name);
       if (n < 0 || (size_t) n >= sizeof child)
         {
-          rc = 1;                     /* path too long */
+          rc = 1;
           continue;
         }
-      if (remove_tree (child) != 0)   /* recurse into the entry */
+      if (remove_tree (child) != 0)
         rc = 1;
     }
   closedir (dir);
 
-  if (rmdir (path) != 0)              /* the directory is empty now */
+  if (rmdir (path) != 0)
     {
       perror (path);
       rc = 1;

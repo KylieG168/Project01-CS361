@@ -17,7 +17,7 @@ main (int argc, char *argv[])
   int rc = EXIT_SUCCESS;
   for (int i = 1; i < argc; i++)
     {
-      if (mkdir (argv[i], 0777) != 0)   /* the umask trims these bits */
+      if (mkdir (argv[i], 0777) != 0)
         {
           perror (argv[i]);
           rc = EXIT_FAILURE;

@@ -1,12 +1,46 @@
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/stat.h>
-#include <unistd.h>
 
 static void usage (void);
+
+static int
+touch_file (const char *path)
+{
+  FILE *fp = fopen (path, "r+");
+  if (fp == NULL)
+    {
+      if (errno != ENOENT)
+        return -1;
+      fp = fopen (path, "w");
+      if (fp == NULL)
+        return -1;
+      return fclose (fp);
+    }
+
+  int c = fgetc (fp);
+  if (c == EOF)
+    {
+      if (ferror (fp))
+        {
+          fclose (fp);
+          return -1;
+        }
+      fclose (fp);
+      fp = fopen (path, "w");
+      if (fp == NULL)
+        return -1;
+      return fclose (fp);
+    }
+
+  if (fseek (fp, 0, SEEK_SET) != 0 || fputc (c, fp) == EOF)
+    {
+      fclose (fp);
+      return -1;
+    }
+  return fclose (fp);
+}
+
 
 int
 main (int argc, char *argv[])
@@ -20,19 +54,11 @@ main (int argc, char *argv[])
   int rc = EXIT_SUCCESS;
   for (int i = 1; i < argc; i++)
     {
-      int fd = open (argv[i], O_WRONLY | O_CREAT, 0666);
-      if (fd < 0)
-        {
-          perror (argv[i]);
-          rc = EXIT_FAILURE;
-          continue;
-        }
-      if (futimens (fd, NULL) != 0)       /* NULL means "now" */
+      if (touch_file (argv[i]) != 0)
         {
           perror (argv[i]);
           rc = EXIT_FAILURE;
         }
-      close (fd);
     }
   return rc;
 }
