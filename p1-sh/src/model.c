@@ -133,6 +133,8 @@ handle_event (fsm_t *fsm, event_t event)
   //   printf ("[%s.%s -> %s]\n", ...);
   action_t effect;
   state_t next = cmdline_transition (fsm, event, &effect);
+  if (next == NST || (next == Term && effect == NULL))
+    fsm->parse_failed = true;
   if (fsm->debug)
     {
       printf ("[%s.%s -> %s]\n", state_name (fsm->state), event_name (event),

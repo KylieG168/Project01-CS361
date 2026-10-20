@@ -86,6 +86,8 @@ shell (FILE *input)
 
           fsm->current_token = token;
           parsing = handle_event (fsm, event);
+          if (fsm->parse_failed)
+            parsing = false;
         }
 
       if (parsing)
@@ -94,7 +96,15 @@ shell (FILE *input)
           handle_event (fsm, NEWLINE);
         }
 
-      if (fsm->result)
+      if (!fsm->debug && !fsm->parse_failed && fsm->commands != NULL && fsm->commands->next != NULL && fsm->commands->next->next == NULL)
+        {
+          int rc = run_pipe (fsm->commands->argv, fsm->commands->next->argv);
+          char status_text[16];
+          snprintf (status_text, sizeof (status_text), "%d", rc);
+          hash_insert ("?", status_text);
+        }
+
+      if (!fsm->parse_failed && fsm->commands != NULL && fsm->commands->next == NULL)
         {
           for (size_t i = 1; fsm->result[i] != NULL; i++)
             {
@@ -152,7 +162,7 @@ shell (FILE *input)
             }
           else
             {
-              rc = run_args (fsm->result);
+              rc = run_args_redirect (fsm->result, fsm->commands->stdout_file);
             }
           char status_text[16];
           snprintf (status_text, sizeof (status_text), "%d", rc);
@@ -160,10 +170,26 @@ shell (FILE *input)
         }
       if (fsm->result != NULL)
         {
-          for (size_t i = 0; fsm->result[i] != NULL; i++)
-            free (fsm->result[i]);
+          // for (size_t i = 0; fsm->result[i] != NULL; i++)
+          //   free (fsm->result[i]);
 
-          free (fsm->result);
+          // free (fsm->result);
+          parsed_command_t *node = fsm->commands;
+
+          while (node != NULL)
+            {
+              parsed_command_t *next = node->next;
+
+              for (size_t i = 0; node->argv[i] != NULL; i++)
+                free (node->argv[i]);
+
+              free (node->argv);
+              free (node->stdout_file);
+              free (node->stderr_file);
+              free (node);
+
+              node = next;
+            }
         }
 
       free (fsm->stdout_file);

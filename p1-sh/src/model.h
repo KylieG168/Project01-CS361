@@ -19,6 +19,17 @@ typedef struct fsm fsm_t;
 // All entry, exit, and effect instances use the action type
 typedef void (*action_t) (fsm_t *);
 
+typedef struct parsed_command
+{
+  char **argv;
+  char *stdout_file;
+  char *stderr_file;
+  bool merge_stderr;
+  bool background;
+
+  struct parsed_command *next;
+} parsed_command_t;
+
 // Each FSM instance contains a current state
 struct fsm
 {
@@ -40,6 +51,9 @@ struct fsm
   char *stdout_file;
   char *stderr_file;
   bool merge_stderr;
+  parsed_command_t *commands;
+  parsed_command_t *last_command;
+  bool parse_failed;
 };
 
 // Generic entry point for handling events

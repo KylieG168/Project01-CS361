@@ -134,7 +134,36 @@ execute (fsm_t *cmdmodel)
     }
   else
     {
-      cmdmodel->result = cmdmodel->args;
+      parsed_command_t *node = calloc (1, sizeof (*node));
+
+      if (node == NULL)
+        {
+          cmdmodel->parse_failed = true;
+          return;
+        }
+
+      node->argv = cmdmodel->args;
+      node->stdout_file = cmdmodel->stdout_file;
+      node->stderr_file = cmdmodel->stderr_file;
+      node->merge_stderr = cmdmodel->merge_stderr;
+      node->background = cmdmodel->background;
+
+      if (cmdmodel->commands == NULL)
+        {
+          cmdmodel->commands = node;
+          cmdmodel->result = node->argv;
+        }
+      else
+        {
+          cmdmodel->last_command->next = node;
+        }
+
+      cmdmodel->last_command = node;
+
+      cmdmodel->stdout_file = NULL;
+      cmdmodel->stderr_file = NULL;
+      cmdmodel->merge_stderr = false;
+      cmdmodel->background = false;
     }
 
   free (cmdmodel->command);
