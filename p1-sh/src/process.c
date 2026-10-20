@@ -5,6 +5,7 @@
 // You should provide some function like this to serve as the interface to
 // parsing the command line. This function is just a placeholder and you
 // should define your own.
+#include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,7 +14,142 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+#include "hash.h"
 #include "process.h"
+
+void
+free_environment (char **environment)
+{
+  if (environment == NULL)
+    return;
+
+  for (size_t i = 0; environment[i] != NULL; i++)
+    free (environment[i]);
+
+  free (environment);
+}
+
+char **
+build_environment (void)
+{
+  char **keys = hash_keys ();
+  if (keys == NULL)
+    return NULL;
+
+  size_t count = 0;
+  while (keys[count] != NULL)
+    count++;
+
+  char **environment = calloc (count + 1, sizeof (char *));
+  if (environment == NULL)
+    {
+      free (keys);
+      return NULL;
+    }
+
+  size_t used = 0;
+
+  for (size_t i = 0; i < count; i++)
+    {
+      if (strcmp (keys[i], "?") == 0)
+        continue;
+
+      const char *value = hash_find (keys[i]);
+      if (value == NULL)
+        continue;
+
+      size_t length = strlen (keys[i]) + strlen (value) + 2;
+      environment[used] = malloc (length);
+
+      if (environment[used] == NULL)
+        {
+          free (keys);
+          free_environment (environment);
+          return NULL;
+        }
+
+      snprintf (environment[used], length, "%s=%s", keys[i], value);
+      used++;
+    }
+
+  free (keys);
+  return environment;
+}
+
+static void
+exec_with_environment (char **argv)
+{
+  char **environment = build_environment ();
+  if (environment == NULL)
+    {
+      fprintf (stderr, "Could not build environment\n");
+      _exit (1);
+    }
+
+  int error = ENOENT;
+
+  if (strchr (argv[0], '/') != NULL)
+    {
+      execve (argv[0], argv, environment);
+      error = errno;
+    }
+  else
+    {
+      const char *path = hash_find ("PATH");
+      if (path == NULL)
+        path = "/usr/bin:/bin";
+
+      const char *directory = path;
+
+      while (1)
+        {
+          const char *colon = strchr (directory, ':');
+          size_t length = colon != NULL ? (size_t)(colon - directory)
+                                        : strlen (directory);
+          size_t size = length + strlen (argv[0]) + 2;
+          char *candidate = malloc (size);
+
+          if (candidate == NULL)
+            {
+              error = ENOMEM;
+              break;
+            }
+
+          if (length == 0)
+            {
+              snprintf (candidate, size, "%s", argv[0]);
+            }
+          else
+            {
+              memcpy (candidate, directory, length);
+              candidate[length] = '/';
+              strcpy (candidate + length + 1, argv[0]);
+            }
+
+          execve (candidate, argv, environment);
+          int attempt_error = errno;
+          free (candidate);
+
+          if (attempt_error == EACCES)
+            error = EACCES;
+          else if (attempt_error != ENOENT && attempt_error != ENOTDIR)
+            {
+              error = attempt_error;
+              break;
+            }
+
+          if (colon == NULL)
+            break;
+
+          directory = colon + 1;
+        }
+    }
+
+  free_environment (environment);
+  errno = error;
+  perror (argv[0]);
+  _exit (error == ENOENT || error == ENOTDIR ? 127 : 126);
+}
 
 int
 run_process (char *cmd)
@@ -25,8 +161,7 @@ run_process (char *cmd)
   int argc = 0;
   char *save = NULL;
 
-  for (char *tok = strtok_r (cmd, " \t\r\n", &save);
-       tok != NULL && argc < 100;
+  for (char *tok = strtok_r (cmd, " \t\r\n", &save); tok != NULL && argc < 100;
        tok = strtok_r (NULL, " \t\r\n", &save))
     {
       argv[argc++] = tok;
@@ -51,11 +186,7 @@ run_args (char **argv)
     }
 
   if (pid == 0)
-    {
-      execvp (argv[0], argv);
-      perror (argv[0]);
-      _exit (127);
-    }
+    exec_with_environment (argv);
 
   int status = 0;
   if (waitpid (pid, &status, 0) == -1)
@@ -106,9 +237,7 @@ run_args_redirect (char **argv, const char *stdout_file)
               close (fd);
             }
         }
-      execvp (argv[0], argv);
-      perror (argv[0]);
-      _exit (127);
+      exec_with_environment (argv);
     }
 
   int status = 0;
@@ -156,9 +285,7 @@ run_pipe (char **left, char **right)
 
       close (pipefd[0]);
       close (pipefd[1]);
-      execvp (left[0], left);
-      perror (left[0]);
-      _exit (127);
+      exec_with_environment (left);
     }
 
   pid_t consumer = fork ();
@@ -181,10 +308,7 @@ run_pipe (char **left, char **right)
 
       close (pipefd[0]);
       close (pipefd[1]);
-
-      execvp (right[0], right);
-      perror (right[0]);
-      _exit (127);
+      exec_with_environment (right);
     }
 
   close (pipefd[0]);

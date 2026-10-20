@@ -1,11 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 
 static void usage (void);
 
 int
 main (int argc, char *argv[])
 {
+  if (argc < 3 || (argc - 1) % 2 != 0)
+    {
+      usage ();
+      return EXIT_FAILURE;
+    }
+
+  for (int i = 1; i < argc; i += 2)
+    {
+      char *end = NULL;
+      errno = 0;
+      long count = strtol (argv[i], &end, 10);
+
+      if (errno != 0 || end == argv[i] || *end != '\0' || count <= 0)
+        {
+          usage ();
+          return EXIT_FAILURE;
+        }
+
+      const char *name = argv[i + 1];
+      const char *value = getenv (name);
+
+      if (value == NULL)
+        value = "";
+
+      for (long j = 0; j < count; j++)
+        printf ("%s=%s\n", name, value);
+    }
+
   return EXIT_SUCCESS;
 }
 

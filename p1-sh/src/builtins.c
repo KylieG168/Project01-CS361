@@ -1,4 +1,5 @@
 #include "builtins.h"
+#include "hash.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -69,6 +70,30 @@ pwd (char *message)
 }
 
 int
+export_var (char *assignment)
+{
+  char *equals = strchr (assignment, '=');
+
+  if (equals == NULL || equals == assignment)
+    return 1;
+
+  *equals = '\0';
+  bool inserted = hash_insert (assignment, equals + 1);
+  *equals = '=';
+
+  return inserted ? 0 : 1;
+}
+
+int
+unset_var (char *name)
+{
+  if (name == NULL || name[0] == '\0')
+    return 1;
+
+  return hash_remove (name) ? 0 : 1;
+}
+
+int
 type (char *message)
 {
   size_t len = strnlen (message, MAX_LINE);
@@ -81,8 +106,8 @@ type (char *message)
       return 0;
     }
 
-  const char *names[]
-      = { "cd", "echo", "pwd", "quit", "type" }; // all the types
+  const char *names[] = { "cd",   "echo",   "pwd",  "quit",
+                          "type", "export", "unset" }; // all the types
   for (size_t i = 0; i < sizeof names / sizeof names[0]; i++)
     {
       if (strcmp (message, names[i]) == 0) // if it is a builtin

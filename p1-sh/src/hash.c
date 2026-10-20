@@ -134,7 +134,7 @@ hash_remove (char *key)
   ssize_t index = find_index (key);
   assert (index >= 0);
 
-  if (table[index].key == NULL) // key not found
+  if (table[index].key == NULL || !table[index].alive) // key not found
     return true;
 
   // If .key is not NULL, find_index found a key match
@@ -197,6 +197,9 @@ insert_help (char *key, char *value, bool dup)
       else
         table[index].key = key;
     }
+
+  if (!table[index].alive)
+    entries++;
 
   // Free the old value and replace it
   free (table[index].value);
