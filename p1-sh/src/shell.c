@@ -77,7 +77,8 @@ shell (FILE *input)
               if (fsm->nargs > 0)
                 {
                   const char *previous = fsm->args[fsm->nargs - 1];
-                  if (strcmp (previous, "-n") == 0 || strcmp (previous, "-f") == 0)
+                  if (strcmp (previous, "-n") == 0
+                      || strcmp (previous, "-f") == 0)
                     {
                       event = TOKEN;
                     }
@@ -96,7 +97,8 @@ shell (FILE *input)
           handle_event (fsm, NEWLINE);
         }
 
-      if (!fsm->debug && !fsm->parse_failed && fsm->commands != NULL && fsm->commands->next != NULL && fsm->commands->next->next == NULL)
+      if (!fsm->debug && !fsm->parse_failed && fsm->commands != NULL
+          && fsm->commands->next != NULL && fsm->commands->next->next == NULL)
         {
           int rc = run_pipe (fsm->commands->argv, fsm->commands->next->argv);
           char status_text[16];
@@ -104,7 +106,8 @@ shell (FILE *input)
           hash_insert ("?", status_text);
         }
 
-      if (!fsm->parse_failed && fsm->commands != NULL && fsm->commands->next == NULL)
+      if (!fsm->parse_failed && fsm->commands != NULL
+          && fsm->commands->next == NULL)
         {
           for (size_t i = 1; fsm->result[i] != NULL; i++)
             {
@@ -196,7 +199,7 @@ shell (FILE *input)
       free (fsm->stderr_file);
       if (fsm->args != NULL)
         {
-          for (size_t i = 0; i< fsm->nargs; i++)
+          for (size_t i = 0; i < fsm->nargs; i++)
             free (fsm->args[i]);
 
           free (fsm->args);

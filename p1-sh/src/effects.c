@@ -80,14 +80,16 @@ append_after_number (fsm_t *cmdmodel)
 void
 begin_redirect (fsm_t *cmdmodel)
 {
-  cmdmodel->redirect_fd = (cmdmodel->pending_number != 0) ? cmdmodel->pending_number : 1;
+  cmdmodel->redirect_fd
+      = (cmdmodel->pending_number != 0) ? cmdmodel->pending_number : 1;
   cmdmodel->pending_number = 0;
 }
 
 void
 save_redirect_file (fsm_t *cmdmodel)
 {
-  char **destination = cmdmodel->redirect_fd == 2 ? &cmdmodel->stderr_file : &cmdmodel->stdout_file;
+  char **destination = cmdmodel->redirect_fd == 2 ? &cmdmodel->stderr_file
+                                                  : &cmdmodel->stdout_file;
   free (*destination);
   *destination = strdup (cmdmodel->current_token);
 }

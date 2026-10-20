@@ -46,7 +46,7 @@ lookup (char *token)
 
   if (!strcmp (token, ">"))
     return REDIRECT;
-  
+
   return TOKEN;
 }
 

@@ -17,12 +17,13 @@ static state_t const _transitions[NUM_STATES][NUM_EVENTS] = {
   { Arguments, Make_Pipe, Term, Background, Number, Redirecting }, // Command
   { Arguments, Make_Pipe, Term, Background, Number, Redirecting }, // Arguments
   { Command, Term, Term, Term, Command, Term },                    // Make_Pipe
-  { Term, Term, Term, Term, Term, Term },                          // Background
+  { Term, Term, Term, Term, Term, Term }, // Background
   { Arguments, Make_Pipe, Term, Background, Number, Redirecting }, // Number
-  { Redirection, Term, Term, Merging, Redirection, Term },         // Redirecting
-  { Arguments, Make_Pipe, Term, Background, Number, Redirecting }, // Redirection
-  { Term, Term, Term, Term, Redirection, Term},                    // Merging
-  { NST, NST, NST, NST, NST, NST }                                 // TERM
+  { Redirection, Term, Term, Merging, Redirection, Term }, // Redirecting
+  { Arguments, Make_Pipe, Term, Background, Number,
+    Redirecting },                               // Redirection
+  { Term, Term, Term, Term, Redirection, Term }, // Merging
+  { NST, NST, NST, NST, NST, NST }               // TERM
 };
 
 // TODO: Create a table mapping states/events to the effect functions. If
@@ -31,19 +32,18 @@ static state_t const _transitions[NUM_STATES][NUM_EVENTS] = {
 static action_t const _effects[NUM_STATES][NUM_EVENTS] = {
   // TOKEN, PIPE, NEWLINE, AMPERSAND, FHANDLE, REDIRECT
   { start_command, NULL, NULL, NULL, start_command, NULL }, // Init
-  { append, link_commands, execute, mark_background,
-    remember_number, begin_redirect },          // Command
-  { append, link_commands, execute, mark_background,
-    remember_number, begin_redirect },          // Arguments
-  { start_command, NULL, NULL, NULL, start_command,
-    NULL },                                     // Make_Pipe
-  { NULL, NULL, execute, NULL, NULL, NULL },    // Background
+  { append, link_commands, execute, mark_background, remember_number,
+    begin_redirect }, // Command
+  { append, link_commands, execute, mark_background, remember_number,
+    begin_redirect },                                       // Arguments
+  { start_command, NULL, NULL, NULL, start_command, NULL }, // Make_Pipe
+  { NULL, NULL, execute, NULL, NULL, NULL },                // Background
   { append_after_number, link_commands, execute, mark_background,
-    remember_number, begin_redirect },          // Number
+    remember_number, begin_redirect }, // Number
   { save_redirect_file, NULL, NULL, NULL, save_redirect_file,
-    NULL },                                     // Redirecting
-  { append, link_commands, execute, mark_background,
-    remember_number, begin_redirect },          // Redirection
+    NULL }, // Redirecting
+  { append, link_commands, execute, mark_background, remember_number,
+    begin_redirect },                           // Redirection
   { NULL, NULL, NULL, NULL, save_merge, NULL }, // Merging
   { NULL, NULL, NULL, NULL, NULL, NULL }        // TERM
 };
@@ -101,8 +101,8 @@ event_name (event_t evt)
   assert (evt <= NIL);
 
   // Event names for printing out
-  const char *names[]
-      = { "TOKEN", "PIPE", "NEWLINE", "AMPERSAND", "FHANDLE", "REDIRECT", "NIL" };
+  const char *names[] = { "TOKEN",   "PIPE",     "NEWLINE", "AMPERSAND",
+                          "FHANDLE", "REDIRECT", "NIL" };
   return names[evt];
 }
 
@@ -113,9 +113,10 @@ state_name (state_t st)
   assert (st <= NST);
 
   // State names for printing out
-  const char *names[] = { "Init",       "Command", "Arguments",   "Make_Pipe",
-                          "Background", "Number",  "Redirecting", "Redirection",
-                          "Merging",    "Term",       "NST" };
+  const char *names[]
+      = { "Init",       "Command", "Arguments",   "Make_Pipe",
+          "Background", "Number",  "Redirecting", "Redirection",
+          "Merging",    "Term",    "NST" };
   return names[st];
 }
 

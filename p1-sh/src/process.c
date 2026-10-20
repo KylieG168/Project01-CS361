@@ -5,13 +5,13 @@
 // You should provide some function like this to serve as the interface to
 // parsing the command line. This function is just a placeholder and you
 // should define your own.
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <fcntl.h>
 
 #include "process.h"
 
@@ -223,23 +223,23 @@ run_pipe (char **left, char **right)
       _exit (127);
     }
 
-    close (pipefd[0]);
-    close (pipefd[1]);
+  close (pipefd[0]);
+  close (pipefd[1]);
 
-    int producer_status = 0;
-    int consumer_status = 0;
+  int producer_status = 0;
+  int consumer_status = 0;
 
-    pid_t producer_result = waitpid (producer, &producer_status, 0);
-    pid_t consumer_result = waitpid (consumer, &consumer_status, 0);
+  pid_t producer_result = waitpid (producer, &producer_status, 0);
+  pid_t consumer_result = waitpid (consumer, &consumer_status, 0);
 
-    if (producer_result == -1 || consumer_result == -1)
-      {
-        perror ("waitpid");
-        return -1;
-      }
+  if (producer_result == -1 || consumer_result == -1)
+    {
+      perror ("waitpid");
+      return -1;
+    }
 
-    if (WIFEXITED (consumer_status))
-      return WEXITSTATUS (consumer_status);
+  if (WIFEXITED (consumer_status))
+    return WEXITSTATUS (consumer_status);
 
-    return -1;
+  return -1;
 }
