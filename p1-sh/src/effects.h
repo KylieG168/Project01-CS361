@@ -12,5 +12,8 @@ void error_newline (fsm_t *);
 void mark_background (fsm_t *);
 void remember_number (fsm_t *);
 void append_after_number (fsm_t *);
+void begin_redirect (fsm_t *);
+void save_redirect_file (fsm_t *);
+void save_merge (fsm_t *);
 
 #endif

@@ -12,32 +12,40 @@
 // the next state for a given event. If there is no transition defined, that
 // entry should be NST ("no state").
 static state_t const _transitions[NUM_STATES][NUM_EVENTS] = {
-  // TOKEN, PIPE, NEWLINE, AMPERSAND, FHANDLE
-  { Command, Term, NST, Term, Command },              // Init
-  { Arguments, Make_Pipe, Term, Background, Number }, // Command
-  { Arguments, Make_Pipe, Term, Background, Number }, // Arguments
-  { Command, Term, Term, Term, Command },             // Make_Pipe
-  { Term, Term, Term, Term, Term },                   // Background
-  { Arguments, Make_Pipe, Term, Background, Number }, // Number
-  { NST, NST, NST, NST, NST }                         // TERM
+  // TOKEN, PIPE, NEWLINE, AMPERSAND, FHANDLE, REDIRECT
+  { Command, Term, NST, Term, Command, Term },                     // Init
+  { Arguments, Make_Pipe, Term, Background, Number, Redirecting }, // Command
+  { Arguments, Make_Pipe, Term, Background, Number, Redirecting }, // Arguments
+  { Command, Term, Term, Term, Command, Term },                    // Make_Pipe
+  { Term, Term, Term, Term, Term, Term },                          // Background
+  { Arguments, Make_Pipe, Term, Background, Number, Redirecting }, // Number
+  { Redirection, Term, Term, Merging, Redirection, Term },         // Redirecting
+  { Arguments, Make_Pipe, Term, Background, Number, Redirecting }, // Redirection
+  { Term, Term, Term, Term, Redirection, Term},                    // Merging
+  { NST, NST, NST, NST, NST, NST }                                 // TERM
 };
 
 // TODO: Create a table mapping states/events to the effect functions. If
 // there is no valid transition, the entry here would be NULL because actions
 // are function pointers.
 static action_t const _effects[NUM_STATES][NUM_EVENTS] = {
-  // TOKEN, PIPE, NEWLINE, AMPERSAND, FHANDLE
-  { start_command, error_pipe, NULL, NULL, start_command }, // Init
+  // TOKEN, PIPE, NEWLINE, AMPERSAND, FHANDLE, REDIRECT
+  { start_command, NULL, NULL, NULL, start_command, NULL }, // Init
   { append, link_commands, execute, mark_background,
-    remember_number }, // Command
+    remember_number, begin_redirect },          // Command
   { append, link_commands, execute, mark_background,
-    remember_number }, // Arguments
-  { start_command, error_pipe, error_newline, NULL,
-    start_command },                   // Make_Pipe
-  { NULL, NULL, execute, NULL, NULL }, // Background
+    remember_number, begin_redirect },          // Arguments
+  { start_command, NULL, NULL, NULL, start_command,
+    NULL },                                     // Make_Pipe
+  { NULL, NULL, execute, NULL, NULL, NULL },    // Background
   { append_after_number, link_commands, execute, mark_background,
-    remember_number },             // Number
-  { NULL, NULL, NULL, NULL, NULL } // TERM
+    remember_number, begin_redirect },          // Number
+  { save_redirect_file, NULL, NULL, NULL, save_redirect_file,
+    NULL },                                     // Redirecting
+  { append, link_commands, execute, mark_background,
+    remember_number, begin_redirect },          // Redirection
+  { NULL, NULL, NULL, NULL, save_merge, NULL }, // Merging
+  { NULL, NULL, NULL, NULL, NULL, NULL }        // TERM
 };
 
 static state_t cmdline_transition (fsm_t *fsm, event_t event,
@@ -94,7 +102,7 @@ event_name (event_t evt)
 
   // Event names for printing out
   const char *names[]
-      = { "TOKEN", "PIPE", "NEWLINE", "AMPERSAND", "FHANDLE", "NIL" };
+      = { "TOKEN", "PIPE", "NEWLINE", "AMPERSAND", "FHANDLE", "REDIRECT", "NIL" };
   return names[evt];
 }
 
@@ -105,8 +113,9 @@ state_name (state_t st)
   assert (st <= NST);
 
   // State names for printing out
-  const char *names[] = { "Init",       "Command", "Arguments", "Make_Pipe",
-                          "Background", "Number",  "Term",      "NST" };
+  const char *names[] = { "Init",       "Command", "Arguments",   "Make_Pipe",
+                          "Background", "Number",  "Redirecting", "Redirection",
+                          "Merging",    "Term",       "NST" };
   return names[st];
 }
 

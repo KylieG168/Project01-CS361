@@ -77,6 +77,21 @@ append_after_number (fsm_t *cmdmodel)
   append (cmdmodel);
 }
 
+void
+begin_redirect (fsm_t *cmdmodel)
+{
+  cmdmodel->redirect_fd = (cmdmodel->pending_number != 0) ? cmdmodel->pending_number : 1;
+  cmdmodel->pending_number = 0;
+}
+
+void
+save_redirect_file (fsm_t *cmdmodel)
+{
+  char **destination = cmdmodel->redirect_fd == 2 ? &cmdmodel->stderr_file : &cmdmodel->stdout_file;
+  free (*destination);
+  *destination = strdup (cmdmodel->current_token);
+}
+
 /* Executed when either a NL or | (pipe) is encountered. For instance, if
   the command line is "ls -l data NL", the current token will be "NL"; also,
   the FSM's args array should be complete, containing "ls", "-l", and "data",
@@ -97,10 +112,25 @@ execute (fsm_t *cmdmodel)
         printf (" %s,", cmdmodel->args[i]);
       printf (" (null) }\n");
 
+      if (cmdmodel->stdout_file != NULL)
+        printf ("  Redirect stdout to file '%s'\n", cmdmodel->stdout_file);
+
+      if (cmdmodel->stderr_file != NULL)
+        printf ("  Redirect stderr to file '%s'\n", cmdmodel->stderr_file);
+
+      if (cmdmodel->merge_stderr)
+        printf ("  Merge stderr into stdout\n");
+
       for (size_t i = 0; i < cmdmodel->nargs; i++)
         free (cmdmodel->args[i]);
 
       free (cmdmodel->args);
+
+      free (cmdmodel->stdout_file);
+      free (cmdmodel->stderr_file);
+      cmdmodel->stdout_file = NULL;
+      cmdmodel->stderr_file = NULL;
+      cmdmodel->merge_stderr = false;
     }
   else
     {
@@ -142,4 +172,10 @@ mark_background (fsm_t *cmdmodel)
 {
   flush_number (cmdmodel);
   cmdmodel->background = true;
+}
+
+void
+save_merge (fsm_t *cmdmodel)
+{
+  cmdmodel->merge_stderr = true;
 }

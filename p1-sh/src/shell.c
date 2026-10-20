@@ -73,6 +73,15 @@ shell (FILE *input)
                 {
                   event = TOKEN;
                 }
+
+              if (fsm->nargs > 0)
+                {
+                  const char *previous = fsm->args[fsm->nargs - 1];
+                  if (strcmp (previous, "-n") == 0 || strcmp (previous, "-f") == 0)
+                    {
+                      event = TOKEN;
+                    }
+                }
             }
 
           fsm->current_token = token;
@@ -156,6 +165,17 @@ shell (FILE *input)
 
           free (fsm->result);
         }
+
+      free (fsm->stdout_file);
+      free (fsm->stderr_file);
+      if (fsm->args != NULL)
+        {
+          for (size_t i = 0; i< fsm->nargs; i++)
+            free (fsm->args[i]);
+
+          free (fsm->args);
+        }
+      free (fsm->command);
       free (fsm);
     }
   printf ("\n");

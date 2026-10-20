@@ -36,6 +36,10 @@ struct fsm
   char **result;
   bool background;
   int pending_number;
+  int redirect_fd;
+  char *stdout_file;
+  char *stderr_file;
+  bool merge_stderr;
 };
 
 // Generic entry point for handling events
@@ -53,6 +57,7 @@ typedef enum
   NEWLINE, // newline at the end of the command
   AMPERSAND,
   FHANDLE,
+  REDIRECT,
   NIL // invalid non-event
 } cmdevt_t;
 #define NUM_EVENTS NIL
@@ -66,6 +71,9 @@ typedef enum
   Make_Pipe, // linking the commands together for a pipe
   Background,
   Number,
+  Redirecting,
+  Redirection,
+  Merging,
   Term, // terminal state (execute program or error)
   NST   // invalid non-state
 } cmdst_t;

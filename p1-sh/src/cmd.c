@@ -43,6 +43,10 @@ lookup (char *token)
 
   if (!strcmp (token, "1") || !strcmp (token, "2"))
     return FHANDLE;
+
+  if (!strcmp (token, ">"))
+    return REDIRECT;
+  
   return TOKEN;
 }
 
