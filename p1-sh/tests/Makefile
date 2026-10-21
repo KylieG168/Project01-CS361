@@ -128,3 +128,4 @@ clean:
 #	rm -rf $(TEST) $(TEST).o $(MODS) $(TESTOUT) $(SCHECKOUT) outputs valgrind ckstyle
 
 .PHONY: default clean check test style status submit
+
