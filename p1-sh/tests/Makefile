@@ -25,7 +25,7 @@
 EXE=../dukesh
 TEST=testsuite
 MODS=public.o
-OBJS=../build/process.o ../build/shell.o ../build/builtins.o ../build/cmd.o ../build/hash.o
+OBJS=../build/process.o ../build/shell.o ../build/builtins.o ../build/cmd.o ../build/hash.o ../build/model.o ../build/effects.o
 LIBS=
 
 UTESTOUT=utests.txt
@@ -128,4 +128,3 @@ clean:
 #	rm -rf $(TEST) $(TEST).o $(MODS) $(TESTOUT) $(SCHECKOUT) outputs valgrind ckstyle
 
 .PHONY: default clean check test style status submit
-

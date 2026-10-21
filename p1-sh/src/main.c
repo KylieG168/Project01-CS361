@@ -9,7 +9,7 @@
 
 static bool get_args (int, char **, FILE **);
 static void usage (void);
-bool fsm_debug = false;
+extern bool fsm_debug;
 
 int
 main (int argc, char *argv[])

@@ -9,7 +9,7 @@
 #include "model.h"
 #include "process.h"
 
-extern bool fsm_debug;
+bool fsm_debug = false;
 
 // No command line can be more than 100 characters
 #define MAXLENGTH 100
