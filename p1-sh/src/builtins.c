@@ -3,8 +3,29 @@
 #include "builtins.h"
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include "hash.h"
 
 #define MAX_LINE 100
+#define MQ_MAX_QUEUES 10
+#define MQ_MAX_MSGS 10
+#define MQ_DEFAULT_PRIO 10
+
+typedef struct
+{
+  char *text;
+  long prio;
+  unsigned long seq;
+} msg_t;
+
+typedef struct
+{
+  char *name;
+  bool open;
+  msg_t msgs[MQ_MAX_MSGS];
+  size_t count;
+} msgq_t;
+
 
 int
 echo (char *message)
@@ -120,4 +141,204 @@ type (char *message)
   printf ("%s not found\n", message);
   return 1;
 
+}
+
+static msgq_t queues[MQ_MAX_QUEUES];
+static size_t queue_count = 0;
+static unsigned long send_seq = 0;
+
+static bool
+parse_int (const char *s, long *out)
+{
+  char *end = NULL;
+  *out = strtol (s, &end, 10);
+  return end != s && *end == '\0';
+}
+
+static msgq_t *
+find_queue (const char *idstr)
+{
+  long id;
+  if (idstr == NULL || !parse_int (idstr, &id))
+    return NULL;
+  if (id < 0 || (size_t) id >= queue_count)
+    return NULL;
+  return queues[id].open ? &queues[id] : NULL;
+}
+
+static char *
+join_words (char **words)
+{
+  size_t len = 1;
+  for (size_t i = 0; words[i] != NULL; i++)
+    len += strlen (words[i]) + 1;
+
+  char *out = malloc (len);
+  if (out == NULL)
+    return NULL;
+  out[0] = '\0';
+  for (size_t i = 0; words[i] != NULL; i++)
+    {
+      if (i > 0)
+        strncat (out, " ", len - strlen (out) - 1);
+      strncat (out, words[i], len - strlen (out) - 1);
+    }
+  return out;
+}
+
+
+static char *
+take_best (msgq_t *q)
+{
+  size_t best = 0;
+  for (size_t i = 1; i < q->count; i++)
+    {
+      if (q->msgs[i].prio < q->msgs[best].prio
+          || (q->msgs[i].prio == q->msgs[best].prio
+              && q->msgs[i].seq < q->msgs[best].seq))
+        best = i;
+    }
+
+  char *text = q->msgs[best].text;
+  for (size_t i = best; i + 1 < q->count; i++)
+    q->msgs[i] = q->msgs[i + 1];
+  q->count--;
+  return text;
+}
+
+static void
+close_queue (size_t id)
+{
+  msgq_t *q = &queues[id];
+
+  if (q->count > 0)
+    {
+      printf ("[%zu] mq.%s not empty:\n", id, q->name);
+      while (q->count > 0)
+        {
+          char *text = take_best (q);
+          printf ("    '%s'\n", text);
+          free (text);
+        }
+    }
+  printf ("[%zu] mq.%s closed\n", id, q->name);
+
+  free (q->name);
+  q->name = NULL;
+  q->open = false;
+}
+
+int
+mqopen (char **args)
+{
+  if (args[1] == NULL)
+    {
+      fprintf (stderr, "usage: mqopen NAME\n");
+      return 1;
+    }
+  if (queue_count >= MQ_MAX_QUEUES)
+    {
+      fprintf (stderr, "mqopen: too many queues\n");
+      return 1;
+    }
+
+  msgq_t *q = &queues[queue_count];
+  q->name = strdup (args[1]);
+  if (q->name == NULL)
+    return 1;
+  q->open = true;
+  q->count = 0;
+  queue_count++;
+  printf ("[%zu] mq.%s\n", queue_count - 1, q->name);
+  return 0;
+}
+
+int
+mqsend (char **args)
+{
+  size_t i = 1;
+  long prio = MQ_DEFAULT_PRIO;
+
+  if (args[i] != NULL && strcmp (args[i], "-p") == 0)
+    {
+      if (args[i + 1] == NULL || !parse_int (args[i + 1], &prio))
+        {
+          fprintf (stderr, "usage: mqsend [-p PRIORITY] ID MESSAGE\n");
+          return 1;
+        }
+      i += 2;
+    }
+
+  msgq_t *q = find_queue (args[i]);
+  if (q == NULL)
+    {
+      fprintf (stderr, "mqsend: no such queue\n");
+      return 1;
+    }
+  if (q->count >= MQ_MAX_MSGS)
+    {
+      fprintf (stderr, "mqsend: queue is full\n");
+      return 1;
+    }
+
+  char *text = join_words (&args[i + 1]);
+  if (text == NULL)
+    return 1;
+
+  q->msgs[q->count].text = text;
+  q->msgs[q->count].prio = prio;
+  q->msgs[q->count].seq = send_seq++;
+  q->count++;
+  return 0;
+}
+
+
+int
+mqrecv (char **args)
+{
+  if (args[1] == NULL || args[2] == NULL)
+    {
+      fprintf (stderr, "usage: mqrecv ID VARIABLE\n");
+      return -1;
+    }
+
+  msgq_t *q = find_queue (args[1]);
+  if (q == NULL)
+    {
+      fprintf (stderr, "mqrecv: no such queue\n");
+      return -1;
+    }
+  if (q->count == 0)
+    {
+      hash_insert (args[2], "");
+      return -1;
+    }
+
+  char *text = take_best (q);
+  hash_insert (args[2], text);
+  free (text);
+  return 0;
+}
+
+int
+mqclose (char **args)
+{
+  msgq_t *q = find_queue (args[1]);
+  if (q == NULL)
+    {
+      fprintf (stderr, "mqclose: no such queue\n");
+      return 1;
+    }
+  close_queue ((size_t) (q - queues));
+  return 0;
+}
+
+void
+mq_close_all (void)
+{
+  for (size_t i = 0; i < queue_count; i++)
+    {
+      if (queues[i].open)
+        close_queue (i);
+    }
 }

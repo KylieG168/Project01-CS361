@@ -9,6 +9,11 @@
 #include "model.h"
 #include "effects.h"
 
+int mqopen (char **args);
+int mqsend (char **args);
+int mqrecv (char **args);
+int mqclose (char **args);
+void mq_close_all (void);
 extern bool fsm_debug;
 
 // No command line can be more than 100 characters
@@ -20,6 +25,65 @@ is_cmd (const char *line, const char *name)
   size_t n = strlen (name);
   return strncmp (line, name, n) == 0
         && (line[n] == ' ' || line[n] == '\n' || line[n] == '\0');
+}
+
+static char *
+expand_vars (const char *word)
+{
+  if (strchr (word, '$') == NULL)
+    return NULL;
+
+  size_t cap = MAXLENGTH * 4;
+  char *out = malloc (cap);
+  if (out == NULL)
+    return NULL;
+  size_t n = 0;
+
+  for (size_t i = 0; word[i] != '\0' && n + 1 < cap; i++)
+    {
+      const char *value = NULL;
+      size_t skip = 0;
+
+      if (word[i] == '$' && word[i + 1] == '?')
+        {
+          value = hash_find ("?");
+          skip = 1;
+        }
+      else if (word[i] == '$' && word[i + 1] == '{')
+        {
+          const char *close = strchr (word + i + 2, '}');
+          if (close != NULL)
+            {
+              char name[64];
+              size_t len = (size_t) (close - (word + i + 2));
+              if (len > 0 && len < sizeof name)
+                {
+                  memcpy (name, word + i + 2, len);
+                  name[len] = '\0';
+                  value = hash_find (name);
+                  skip = len + 2;       /* "{" + name + "}" */
+                  if (value == NULL)
+                    value = "";
+                }
+            }
+        }
+
+      if (skip == 0)
+        out[n++] = word[i];
+      else
+        {
+          if (value == NULL)
+            value = "";
+          size_t vlen = strlen (value);
+          if (n + vlen + 1 >= cap)
+            break;
+          memcpy (out + n, value, vlen);
+          n += vlen;
+          i += skip;
+        }
+    }
+  out[n] = '\0';
+  return out;
 }
 
 void
@@ -71,14 +135,11 @@ shell (FILE *input)
         {
           for (size_t i = 1; fsm->result[i] != NULL; i++)
             {
-              if (!strcmp (fsm->result[i], "$?"))
+              char *expanded = expand_vars (fsm->result[i]);
+              if (expanded != NULL)
                 {
-                  const char *code = hash_find ("?");
-                  char *replacement = strdup (code != NULL ? code : "");
-                  if (replacement == NULL)
-                    continue;
                   free (fsm->result[i]);
-                  fsm->result[i] = replacement;
+                  fsm->result[i] = expanded;
                 }
             }
 
@@ -124,6 +185,22 @@ shell (FILE *input)
                     rc = 1;
                 }
             }
+          else if (!strcmp (cmd, "mqopen"))
+            {
+              rc = mqopen (fsm->result);
+            }
+          else if (!strcmp (cmd, "mqsend"))
+            {
+              rc = mqsend (fsm->result);
+            }
+          else if (!strcmp (cmd, "mqrecv"))
+            {
+              rc = mqrecv (fsm->result);
+            }
+          else if (!strcmp (cmd, "mqclose"))
+            {
+              rc = mqclose (fsm->result);
+            }
           else
             {
               rc = run_args (fsm->result);
@@ -131,8 +208,8 @@ shell (FILE *input)
           char status_text[16];
           snprintf (status_text, sizeof (status_text), "%d", rc);
           hash_insert ("?", status_text);
-                    fprintf (stderr, "DEBUG rc=%d stored=%s\n", rc, hash_find ("?"));
         }
+
       if (fsm->result != NULL)
         {
           for (size_t i = 0; fsm->result[i] != NULL; i++)
@@ -142,6 +219,7 @@ shell (FILE *input)
         }
       free (fsm);
     }
+  mq_close_all ();
   printf ("\n");
   hash_destroy ();
 }
