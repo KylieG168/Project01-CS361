@@ -9,6 +9,13 @@
 #include "model.h"
 #include "process.h"
 
+/* ipc: prototypes (builtins.h is off-limits) */
+int mqopen (char **args);
+int mqsend (char **args);
+int mqrecv (char **args);
+int mqclose (char **args);
+void mq_close_all (void);
+
 bool fsm_debug = false;
 
 // No command line can be more than 100 characters
@@ -355,6 +362,15 @@ shell (FILE *input)
                         rc = 1;
                     }
                 }
+              /* ipc: message queue commands */
+              else if (!strcmp (cmd, "mqopen"))
+                rc = mqopen (command_argv);
+              else if (!strcmp (cmd, "mqsend"))
+                rc = mqsend (command_argv);
+              else if (!strcmp (cmd, "mqrecv"))
+                rc = mqrecv (command_argv);
+              else if (!strcmp (cmd, "mqclose"))
+                rc = mqclose (command_argv);
               else
                 {
                   rc = run_args_redirect (command_argv,
@@ -400,6 +416,7 @@ shell (FILE *input)
       free (fsm->command);
       free (fsm);
     }
+  mq_close_all ();   /* ipc: close any queues still open */
   printf ("\n");
   hash_destroy ();
 }
