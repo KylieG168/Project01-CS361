@@ -9,7 +9,6 @@
 #include "model.h"
 #include "process.h"
 
-/* ipc: prototypes (builtins.h is off-limits) */
 int mqopen (char **args);
 int mqsend (char **args);
 int mqrecv (char **args);
@@ -416,7 +415,7 @@ shell (FILE *input)
       free (fsm->command);
       free (fsm);
     }
-  mq_close_all ();   /* ipc: close any queues still open */
+  mq_close_all ();
   printf ("\n");
   hash_destroy ();
 }
